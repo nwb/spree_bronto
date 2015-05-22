@@ -1,0 +1,11 @@
+
+<h1><%= Spree.t("bronto.new_list") %></h1>
+
+<%= render :partial => 'spree/admin/shared/error_messages', :locals => { :target => @bronto_list } %>
+
+<%= form_for [:admin,@bronto_list], :html => { :multipart => true }  do |f| %>
+  <%= render :partial => "form", :locals => { :f => f } %>
+  <p>
+    <%= submit_tag Spree.t("create") %>
+  </p>
+<% end %>

@@ -1,0 +1,38 @@
+
+
+<div class='toolbar'>
+  <ul class='actions'>
+    <li>
+      <%= button_link_to Spree.t("bronto.new_list"), new_object_url, :icon => 'add'  %>
+    </li>
+  </ul>
+  <br class='clear' />
+</div>
+
+<h1><%= Spree.t("exact_target.lists") %></h1>
+
+<table class="index">
+  <thead data-hook="admin_bronto_lists_index_headers">
+      <th><%= Spree.t("bronto.title") %></th>
+      <th><%= Spree.t("bronto.list_id") %></th>
+      <th><%= Spree.t("bronto.subscribe_all_new_users") %></th>
+      <th><%= Spree.t("bronto.visible") %></th>
+    <th data-hook="admin_bronto_lists_index_header_actions"></th>
+  </thead>
+  <tbody>
+    <% @bronto_lists.each do |bronto_list|%>
+      <tr data-hook="admin_exact_target_lists_index_rows" id="<%= dom_id bronto_list %>">
+        <%- locals = {:exact_target_list => bronto_list} -%>
+
+          <td width="140px"><%= bronto_list.title %></td>
+          <td width="120px"><%= bronto_list.list_id %></td>
+          <td width="40px"><%= bronto_list.subscribe_all_new_users.to_s.titleize %></td>
+          <td width="40px"><%= bronto_list.visible.to_s.titleize %></td>
+        <td data-hook="admin_bronto_lists_index_row_actions" width="140px">
+            <%= link_to_edit bronto_list %> &nbsp;
+            <%= link_to_delete bronto_list %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

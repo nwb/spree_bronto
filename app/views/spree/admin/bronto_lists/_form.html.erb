@@ -1,0 +1,49 @@
+<%= render :partial => "spree/admin/bronto_lists/retrieve_lists", :formats => :js %>
+
+    <%= f.field_container :title do %>
+    <%= f.label :title, Spree.t("bronto.title") %> <span class="required">*</span><br />
+    <%= f.text_field :title, :class => 'fullwidth title'  %>
+    <%= f.error_message_on :title %>
+  <% end %>
+
+  <div id="lists">
+    <%= f.field_container :list_id do %>
+      <%= f.label :list_id, Spree.t("bronto.list_id") %> <span class="required">*</span><br />
+      <%= f.text_field :list_id %>
+      <%= button_tag Spree.t("bronto.retrieve_from_bronto"), :id => "retrieve_bronto_list", :type => "button" %>
+      <%= f.error_message_on :list_id %>
+    <% end %>
+  </div>
+
+  <%= f.field_container :visible do %>
+    <%= f.label :visible, Spree.t("bronto.visible") %> <span class="required">*</span><br />
+
+      <%= f.radio_button(:visible, true ) %>
+      <%= Spree.t("yes") %>
+
+      <%= f.radio_button(:visible, false ) %>
+      <%= Spree.t("no") %>
+
+      <%= f.error_message_on :visible %>
+  <% end %>
+
+  <%= f.field_container :subscribe_all_new_users do %>
+    <%= f.label :subscribe_all_new_users, Spree.t("bronto.subscribe_all_new_users") %> <span class="required">*</span><br />
+
+      <%= f.radio_button(:subscribe_all_new_users, true ) %>
+      <%= Spree.t("yes") %>
+
+      <%= f.radio_button(:subscribe_all_new_users, false ) %>
+      <%= Spree.t("no") %>
+
+      <%= f.error_message_on :subscribe_all_new_users %>
+  <% end %>
+
+
+  <%= f.field_container :store_id do %>
+      <%= f.label :store_id, Spree.t("bronto.store_id") %> <span class="required">*</span><br />
+
+      <%= f.collection_select :store_id, @stores, :id, :name, {}, { :multiple => false, :class => "select2" } %>
+
+      <%= f.error_message_on :store_id %>
+  <% end %>

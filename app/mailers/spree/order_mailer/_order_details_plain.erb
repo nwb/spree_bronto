@@ -1,0 +1,22 @@
+Item(s):
+<% order.line_items.each_with_index do |item, i| %>
+<%= "#{i}. #{item.variant.product.name.gsub!(/[^0-9A-Za-z]/, ' ')} - SKU: #{item.variant.sku} - #{item.quantity} @ #{number_to_currency item.price} ea." %>
+<% end %>
+
+Items Subtotal: <%= number_to_currency order.item_total %>
+<% order.adjustments.each do |adjustment| %>
+<%= adjustment.description %>: <%= number_to_currency adjustment.amount %>
+<% end %>
+======================
+
+TOTAL: <%= number_to_currency order.total %>
+
+These items will be shipped to:
+<% address=!order.ship_address ? order.bill_address : order.ship_address %>
+<%= address.firstname %> <%= address.lastname %>
+
+<%= address.address1 %> <%= address.address2 unless address.address2.blank?%>
+
+<%= address.city %> <%= address.state_id.blank? ? address.state_name :  address.state.abbr%>
+
+<%= address.country.name %> <%= address.zipcode %>

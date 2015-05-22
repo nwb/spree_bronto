@@ -1,0 +1,24 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+ spree:
+  bronto:
+    lists_admin: Bronto Lists
+    manage_settings: Manage Bronto mailing lists made available to Spree users
+    new_list: New List
+    lists: Bronto Lists
+    list_id: Bronto List ID
+    subscribe_all_new_users: Subscribe all new users
+    title: Display Name
+    editing: Editing Bronto List
+    retrieve_from_bronto: Retrieve from Bronto
+    slow_warning: This can be slow depending on the number of items defined.
+    only_list_can_subscribe_all: Only one list can be set to subscribe all new users at a time.
+    validate_unique: is already registered to another list
+    visible: Visible
+    my_newsletters: My Newsletters
+    update_subscriptions: Update Subscriptions
+    subscribed: Subscribed?
+    subscribe_question: Would you like to subscribe to any of our newsletters?
+    store_id: Web Store

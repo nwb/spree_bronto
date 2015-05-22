@@ -1,0 +1,69 @@
+<% tagkey= Spree::BrontoConfiguration.account[@order.store.code]['tagkey'] unless !@order %>
+
+<script type="text/javascript">
+    var _bsw = _bsw || [];
+    _bsw.push(['_bswId', '<%= tagkey %>']);
+    (function() {
+        var bsw = document.createElement('script'); bsw.type = 'text/javascript'; bsw.async = true;
+        bsw.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'js.bronto.com/s/b.min.js';
+        var t = document.getElementsByTagName('script')[0]; t.parentNode.insertBefore(bsw, t);
+    })();
+</script>
+<%
+   if !!@order  && @order.state !='complete' # cart review or @order review page
+     cartItems="["
+     @order.line_items.each do |item|
+       cartItems += '{"other": null'
+       cartItems += ', "imageUrl": "' + ERB::Util.html_escape(@order.line_items.first.product.images.first.attachment.url(:product))
+       cartItems += '", "unitPrice": ' + item.price.to_s
+       cartItems += ', "sku": "' + item.variant.sku
+       cartItems += '", "category": "'
+       cartItems += '", "description": "'
+       cartItems += '", "productUrl": "' + 'http://www.' + @order.store.name.downcase + '/products/' + item.product.slug
+       cartItems += '", "name": "' + ERB::Util.html_escape(item.product.name)
+       cartItems += '", "quantity": ' + item.quantity.to_s
+       cartItems += ', "salePrice": 0'
+       cartItems += ', "totalPrice": ' + (item.price * item.quantity).to_f.to_s
+       cartItems += ' },'
+     end
+     cartItems = cartItems.gsub(/\,\z/,'') + ']'
+
+ %>
+    <script type="text/javascript">
+        // create a data object with information of the product added
+        var braCart = {
+            "customerCartId": "<%= "#{"QA-" if request.server_name =~ /^(dev.|staging.|local.)/ }#{@order.number}" %>",
+            "email": "<%= @order.email %>",
+            "grandTotal": <%= @order.total.to_s %>,
+            "subtotal": <%= @order.item_total.to_s %>,
+            "discountAmount": <%= (100*@order.line_item_adjustments.promotion.eligible.map{|t| t.amount}.sum).to_i/100.00 %>,
+            "url": "http://www.<%= @order.store.name.downcase %>/orders/new",
+            "currency": "USD",
+            "taxAmount": <%= (100*@order.line_item_adjustments.tax.eligible.map{|t| t.amount}.sum).to_i/100.00 %>,
+            "lineItems": <%= cartItems.html_safe %>
+        };
+    </script>
+
+    <% elsif !!@order  && @order.state=='complete'         # The bronto conversion tracking
+       orderItems="["
+       @order.line_items.each do |item|
+         orderItems += '{"item_id": "' + item.id.to_s + '", "amount": "' + item.price.to_s + '", "name": "' + ERB::Util.html_escape(item.product.name) + '"'
+         orderItems += ', "quantity": ' + item.quantity.to_s + ', "url": "http://www.' + @order.store.name + '/' + item.product.slug + '" },'
+         end
+       orderItems = orderItems.gsub(/\,\z/,'') + ']'
+     %>
+    <script type="text/javascript">
+        // create a data object with information of the product added
+        var braOrder = {
+            "order_id": "<%= "#{"QA-" if request.server_name =~ /^(dev.|staging.|local.)/ }#{@order.number}" %>",
+            "email": "<%= @order.email %>",
+            "date": "<%= @order.completed_at.iso8601() %>",
+            "items": <%= orderItems %>
+        };
+
+        //bta.addOrder(braOrder)
+    </script>
+
+
+<% end %>
+

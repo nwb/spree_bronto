@@ -1,0 +1,13 @@
+<script type="text/javascript">
+$(document).ready(
+        function() {
+          $('#retrieve_bronto_list').click(function () {
+            $.getScript('<%= get_lists_admin_bronto_lists_path %>.js?list_id=' + $('#bronto_list_list_id').val() + '&store_id=' + $('#bronto_list_store_id').val())
+          });
+          $('#bronto_list_store_id').change(function () {
+            $.getScript('<%= get_lists_admin_bronto_lists_path %>.js?list_id=' + $('#bronto_list_list_id').val() + '&store_id=' + $('#bronto_list_store_id').val())
+          });
+        });
+</script>
+
+

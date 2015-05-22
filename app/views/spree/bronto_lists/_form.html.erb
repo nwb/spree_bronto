@@ -1,0 +1,17 @@
+<% unless @bronto_lists.nil? %>
+  <% @bronto_lists.each do |bronto_list| %>
+    <tr>
+      <td><%= bronto_list.title %></td>
+      <td>
+        <label class="sub">
+        <%= radio_button_tag("user[bronto_list_attributes][#{bronto_list.id}]", true, @user.bronto_lists.include?(bronto_list)  ) %>
+        <%= t("yes") %>
+        </label> &nbsp;
+        <label class="sub">
+         <%= radio_button_tag("user[bronto_list_attributes][#{bronto_list.id}]", false, !@user.bronto_lists.include?(bronto_list)   ) %>
+         <%= t("no") %>
+       </label>
+      </td>
+    </tr>
+  <% end %>
+<% end %>

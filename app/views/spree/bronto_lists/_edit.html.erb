@@ -1,11 +1,10 @@
-<div class="address_box">
+<div class="">
+
+<h3><%= t("bronto.my_newsletters") %></h3>
 
 <%= render :partial => 'spree/shared/error_messages', :locals => { :target => @user } %>
 
-<%= form_for(@user, :url => user_path(@user), :html => { :method => :put }) do |f| %>
-
-<h2><%= t("bronto.my_newsletters") %></h2>
-<br/>
+<%= form_for(@user, :url => user_path(@user), :html => { :method => :put, :class => "account-summary well" }) do |f| %>
   <table style="text-align: left">
     <tr>
       <th width="250px"><%= t('name') %></th>
@@ -14,7 +13,9 @@
     <%= render :partial => "spree/bronto_lists/form", @collection => @bronto_lists, :locals => { :f => f } %>
   </table>
 <br/>
-<%=button_tag t("bronto.update_subscriptions")%>
+<%= button_tag :class => 'btn btn-submit' do %>
+  <%= t("bronto.update_subscriptions") %>
 <% end %>
-<br/>
+<% end %>
+
 </div>

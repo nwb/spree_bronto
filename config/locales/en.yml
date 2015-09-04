@@ -3,6 +3,8 @@
 
 en:
  spree:
+  subscription_sent: Signed up
+  subscription_notsent: Singup failed
   bronto:
     lists_admin: Bronto Lists
     manage_settings: Manage Bronto mailing lists made available to Spree users
@@ -22,3 +24,4 @@ en:
     subscribed: Subscribed?
     subscribe_question: Would you like to subscribe to any of our newsletters?
     store_id: Web Store
+    no_such_list: This newsletter does not exist

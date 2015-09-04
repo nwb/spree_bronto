@@ -1,15 +1,15 @@
 This email is to inform you that your order has been shipped on <%= Time.now.strftime("%B %d %Y at %I:%M %p") %>.
 
 Your tracking details:
-Package ID: <%= order.shipment.number %>
-Sent date: <%= order.shipment.updated_at.strftime("%B %d %Y at %I:%M %p") %>
-Shipped via: <%= order.shipment.shipping_method.name %>
+Package ID: <%= order.shipments.first.number %>
+Sent date: <%= order.shipments.first.updated_at.strftime("%B %d %Y at %I:%M %p") %>
+Shipped via: <%= order.shipments.first.shipping_method.name %>
 
-<%unless order.shipment.shipping_method.blank? || order.shipment.tracking.blank? %>
-<%= order.shipment.shipping_method.name%> Tracking Number: <%= order.shipment.tracking %>
+<%unless order.shipments.first.shipping_method.blank? || order.shipments.first.tracking.blank? %>
+<%= order.shipments.first.shipping_method.name%> Tracking Number: <%= order.shipments.first.tracking %>
 
 To track your package, go to:
-<%=  order.shipment.shipping_method.trackurl+order.shipment.tracking%>
+<%=  order.shipments.first.shipping_method.trackurl+order.shipments.first.tracking%>
 <% end %>
 
 Here are the details of the order we received on <%= order.completed_at.strftime("%B %d %Y at %I:%M %p") %>.

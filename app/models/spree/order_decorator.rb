@@ -1,5 +1,4 @@
-module Spree
-  Order.class_eval do
+Spree::Order.class_eval do
 
     def deliver_order_confirmation_email
       #OrderMailer.confirm_email(id).deliver_later  # we replace OrderMailer with DelayedSend
@@ -27,5 +26,5 @@ module Spree
                        "order_mailer/order_cancel_plain",
                        "order_mailer/order_cancel_html").perform
     end
-  end
+
 end

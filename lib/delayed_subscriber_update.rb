@@ -1,4 +1,4 @@
-class DelayedSubscriberUpdate < Struct.new(:token, :order_id)
+DelayedSubscriberUpdate = Struct.new(:token, :order_id) do
 
   def perform
     order = Spree::Order.find(order_id)

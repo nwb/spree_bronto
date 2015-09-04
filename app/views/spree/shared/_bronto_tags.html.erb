@@ -1,4 +1,4 @@
-<% tagkey= Spree::BrontoConfiguration.account[@order.store.code]['tagkey'] unless !@order %>
+<% tagkey= Spree::BrontoConfiguration.account[current_store.code]['tagkey'] unless !@order %>
 
 <script type="text/javascript">
     var _bsw = _bsw || [];
@@ -19,7 +19,7 @@
        cartItems += ', "sku": "' + item.variant.sku
        cartItems += '", "category": "'
        cartItems += '", "description": "'
-       cartItems += '", "productUrl": "' + 'http://www.' + @order.store.name.downcase + '/products/' + item.product.slug
+       cartItems += '", "productUrl": "' + 'http://www.' + current_store.name.downcase + '/products/' + item.product.slug
        cartItems += '", "name": "' + ERB::Util.html_escape(item.product.name)
        cartItems += '", "quantity": ' + item.quantity.to_s
        cartItems += ', "salePrice": 0'
@@ -37,7 +37,7 @@
             "grandTotal": <%= @order.total.to_s %>,
             "subtotal": <%= @order.item_total.to_s %>,
             "discountAmount": <%= (100*@order.line_item_adjustments.promotion.eligible.map{|t| t.amount}.sum).to_i/100.00 %>,
-            "url": "http://www.<%= @order.store.name.downcase %>/orders/new",
+            "url": "http://www.<%= current_store.name.downcase %>/cart",
             "currency": "USD",
             "taxAmount": <%= (100*@order.line_item_adjustments.tax.eligible.map{|t| t.amount}.sum).to_i/100.00 %>,
             "lineItems": <%= cartItems.html_safe %>

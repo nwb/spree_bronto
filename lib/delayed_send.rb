@@ -1,4 +1,4 @@
-class DelayedSend < Struct.new(:store_code, :email, :message_name, :order_id, :plain_view, :html_view)
+DelayedSend = Struct.new(:store_code, :email, :message_name, :order_id, :plain_view, :html_view) do
   def perform
     return if email.blank?
     #store_code ||= 'default'

@@ -1,11 +1,13 @@
 <% unless @bronto_lists.blank? %>
     <%- @subscribe = @order.user.nil? ? true : !@order.user.bronto_lists.include?(@bronto_lists.first.id) -%>
-    <p id="snewsletters" class="field">
-      <label>Opt-in to our newsletter:</label>
+    <p class="address_box" id="snewsletters" >
+      <%= label_tag "Opt-in to our newsletter:" %>
       <%= radio_button_tag("bronto_list[#{@bronto_lists.first.id}]", true, @subscribe, :style => "width:20px;") %>
       <span><%= t("yes") %>&nbsp;</span>
 
       <%= radio_button_tag("bronto_list[#{@bronto_lists.first.id}]", false, !@subscribe, :style => "width:20px;") %>
       <span><%= t("no") %></span>
+      <span class="note">(sent twice a month, includes unadvertised discounts)</span>
     </p>
+
 <% end %>

@@ -1,4 +1,4 @@
-class DelayedTrigger < Struct.new(:store_code, :email, :message_name, :attributes, :mail_type)
+DelayedTrigger = Struct.new(:store_code, :email, :message_name, :attributes, :mail_type) do
   def perform
     return if email.blank?
     begin

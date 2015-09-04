@@ -16,8 +16,12 @@ module SpreeBronto
       Dir.glob(File.join(File.dirname(__FILE__), '../../lib/bronto_integration/bronto_integration.rb')) do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
-      Dir.glob(File.join(File.dirname(__FILE__), '../../lib/delayed*.rb')) do |c|
-        Rails.configuration.cache_classes ? require(c) : load(c)
+      #Dir.glob(File.join(File.dirname(__FILE__), '../../lib/spree/controller_helpers/list.rb')) do |c|
+      #  Rails.configuration.cache_classes ? require(c) : load(c)
+      #end
+      Dir.glob(File.join(File.dirname(__FILE__), '../../lib/delayed_*.rb')) do |c|
+        require(c)
+        #Rails.configuration.cache_classes ? require(c) : load(c)
       end
     end
 

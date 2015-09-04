@@ -1,4 +1,4 @@
-class DelayedSubscriberDelete < Struct.new(:store_code, :user, :list)
+DelayedSubscriberDelete = Struct.new(:store_code, :user, :list) do
   def perform
     if list.nil? || !user
       subscriber_id = -1
@@ -19,17 +19,17 @@ class DelayedSubscriberDelete < Struct.new(:store_code, :user, :list)
       end
     end
 
-    unless user.is_a? String    # update  exact_target_lists
-      begin
-        list_del=user.bronto_lists.select{|l| l.id== list.id}
-        if list_del.length>0
-          user.bronto_lists.delete(list_del)
-        end
-        user.save!
-      rescue
-        #raise exception
-      end
-    end
+    #unless user.is_a? String    # update  exact_target_lists
+    #  begin
+    #    list_del=user.bronto_lists.select{|l| l.id== list.id}
+    #    if list_del.length>0
+    #      user.bronto_lists.delete(list_del)
+    #    end
+    #    user.save!
+    #  rescue
+    #    #raise exception
+    #  end
+    #end
 
   end
 end

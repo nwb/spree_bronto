@@ -1,5 +1,4 @@
-
-class DelayedSubscriberAdd < Struct.new(:store_code, :user, :list, :ops)
+DelayedSubscriberAdd = Struct.new(:store_code, :user, :list, :ops) do
   def perform
 
     if list.nil? || !user
@@ -26,13 +25,14 @@ class DelayedSubscriberAdd < Struct.new(:store_code, :user, :list, :ops)
       end
     end
 
-    unless user.is_a? String
-      begin
-      user.bronto_lists << list
-      user.save!
-      rescue
-      end
-    end
+    #unless user.is_a? String
+    #  begin
+    #  user.bronto_lists << list
+    #  user.save!
+    #  rescue
+    #  end
+    #end
+
 
   end
 end

@@ -2,13 +2,13 @@
 
 <p>
   <strong>Your tracking details:</strong><br />
-  Package ID: <%= order.shipment.number %><br />
-  Sent date: <%= order.shipment.updated_at.strftime("%B %d %Y at %I:%M %p") %><br />
-  Shipped via: <%= order.shipment.shipping_method.name %><br /><br />
-  <%unless order.shipment.shipping_method.blank? || order.shipment.tracking.blank? %>
-    <%= order.shipment.shipping_method.name%> Tracking Number: <%= order.shipment.tracking %><br />
+  Package ID: <%= order.shipments.first.number %><br />
+  Sent date: <%= order.shipments.first.updated_at.strftime("%B %d %Y at %I:%M %p") %><br />
+  Shipped via: <%= order.shipments.first.shipping_method.name %><br /><br />
+  <%unless order.shipments.first.shipping_method.blank? || order.shipments.first.tracking.blank? %>
+    <%= order.shipments.first.shipping_method.name%> Tracking Number: <%= order.shipments.first.tracking %><br />
     To track your package, go to:<br />
-    <a href="<%= order.shipment.shipping_method_trackurl+order.shipment.tracking %>"><%=order.shipment.shipping_method.name %> Tracking</a>
+    <a href="<%= order.shipments.first.shipping_method_trackurl+order.shipments.first.tracking %>"><%=order.shipments.first.shipping_method.name %> Tracking</a>
   <% end %>
 </p>
 

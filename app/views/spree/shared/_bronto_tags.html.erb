@@ -13,8 +13,14 @@
    if !!@order  && @order.state !='complete' # cart review or @order review page
      cartItems="["
      @order.line_items.each do |item|
+       variant = item.variant
+       if variant.images.length == 0
+         img_url=small_image(variant.product)
+         else
+         img_url=variant.images.first.attachment.url(:small)
+       end
        cartItems += '{"other": null'
-       cartItems += ', "imageUrl": "' + ERB::Util.html_escape(@order.line_items.first.product.images.first.attachment.url(:product))
+       cartItems += ', "imageUrl": "' + ERB::Util.html_escape(img_url)
        cartItems += '", "unitPrice": ' + item.price.to_s
        cartItems += ', "sku": "' + item.variant.sku
        cartItems += '", "category": "'

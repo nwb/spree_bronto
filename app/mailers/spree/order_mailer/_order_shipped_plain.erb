@@ -9,7 +9,7 @@ Shipped via: <%= order.shipments.first.shipping_method.name %>
 <%= order.shipments.first.shipping_method.name%> Tracking Number: <%= order.shipments.first.tracking %>
 
 To track your package, go to:
-<%=  order.shipments.first.shipping_method.trackurl+order.shipments.first.tracking%>
+<%= order.shipments.first.shipping_method.tracking_url+order.shipments.first.tracking %>"
 <% end %>
 
 Here are the details of the order we received on <%= order.completed_at.strftime("%B %d %Y at %I:%M %p") %>.

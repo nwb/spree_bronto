@@ -5,7 +5,7 @@ Item(s):
 
 Items Subtotal: <%= number_to_currency order.item_total %>
 <% order.adjustments.each do |adjustment| %>
-<%= adjustment.description %>: <%= number_to_currency adjustment.amount %>
+<%= adjustment.label %>: <%= number_to_currency adjustment.amount %>
 <% end %>
 ======================
 

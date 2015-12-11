@@ -40,7 +40,7 @@
     </tr>
     <% order.adjustments.each do |adjustment| %>
       <tr>
-        <td valign="middle" align="right" colspan="2"><%= adjustment.description %></td>
+        <td valign="middle" align="right" colspan="2"><%= adjustment.label %></td>
         <td valign="middle" align="right"><%= number_to_currency adjustment.amount %></td>
       </tr>
     <% end %>

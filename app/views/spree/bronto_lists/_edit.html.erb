@@ -7,7 +7,7 @@
 <%= form_for(@user, :url => user_path(@user), :html => { :method => :put, :class => "account-summary well" }) do |f| %>
   <table style="text-align: left">
     <tr>
-      <th width="250px"><%= t('name') %></th>
+      <th width="70%"><%= t('name') %></th>
       <th><%= t('bronto.subscribed') %></th>
     </tr>
     <%= render :partial => "spree/bronto_lists/form", @collection => @bronto_lists, :locals => { :f => f } %>

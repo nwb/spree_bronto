@@ -11,7 +11,7 @@ DelayedTrigger = Struct.new(:store_code, :email, :message_name, :attributes, :ma
       communication = BrontoIntegration::Communication.new(token)
       communication.trigger_delivery_by_id(message_name,email,'triggered',mail_type||'html',attributes||{},email_options)
     rescue => exception
-      #raise exception   # as now only campaign use this and their templates may not be approved. let it go.
+      raise exception unless exception.to_s.include? 'Error Code: 30'
     end
   end
 end

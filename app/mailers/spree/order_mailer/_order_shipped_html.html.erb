@@ -8,7 +8,7 @@
   <%unless order.shipments.first.shipping_method.blank? || order.shipments.first.tracking.blank? %>
     <%= order.shipments.first.shipping_method.name%> Tracking Number: <%= order.shipments.first.tracking %><br />
     To track your package, go to:<br />
-    <a href="<%= order.shipments.first.shipping_method.tracking_url+order.shipments.first.tracking %>"><%=order.shipments.first.shipping_method.name %> Tracking</a>
+    <a href="<%= order.shipments.first.shipping_method.tracking_url.to_s+order.shipments.first.tracking.to_s %>"><%=order.shipments.first.shipping_method.name %> Tracking</a>
   <% end %>
 </p>
 

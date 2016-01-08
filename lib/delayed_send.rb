@@ -2,9 +2,9 @@ DelayedSend = Struct.new(:store_code, :email, :message_name, :order_id, :plain_v
   def perform
     return if (email.blank? || store_code.blank?)
 
-    Delayed::Worker.logger = Logger.new(File.join(Rails.root, 'log', 'dj.log'))
+    #Delayed::Worker.logger = Logger.new(File.join(Rails.root, 'log', 'dj.log'))
 
-    Delayed::Worker.logger.debug("Log the bronto config: #{Spree::BrontoConfiguration.account[store_code].inspect}")
+    #Delayed::Worker.logger.debug("Log the bronto config: #{Spree::BrontoConfiguration.account[store_code].inspect}")
 
     #byebug
     #store_code ||= 'nwb'

@@ -42,4 +42,5 @@ DelayedSend = Struct.new(:store_code, :email, :message_name, :order_id, :plain_v
     end
   end
 
+  alias_method :perform_without_delay, :perform
 end

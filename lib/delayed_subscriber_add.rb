@@ -36,4 +36,5 @@ DelayedSubscriberAdd = Struct.new(:store_code, :user, :list, :ops) do
 
 
   end
+  alias_method :perform_without_delay, :perform
 end

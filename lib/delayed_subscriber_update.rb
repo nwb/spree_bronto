@@ -35,4 +35,5 @@ DelayedSubscriberUpdate = Struct.new(:token, :order_id) do
         end
       end
   end
+  alias_method :perform_without_delay, :perform
 end

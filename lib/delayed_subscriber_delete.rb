@@ -33,4 +33,5 @@ DelayedSubscriberDelete = Struct.new(:store_code, :user, :list) do
     #end
 
   end
+  alias_method :perform_without_delay, :perform
 end

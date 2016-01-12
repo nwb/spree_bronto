@@ -15,4 +15,5 @@ DelayedTrigger = Struct.new(:store_code, :email, :message_name, :attributes, :ma
       raise exception unless exception.to_s.include? 'Error Code: 30'
     end
   end
+  alias_method :perform_without_delay, :perform
 end

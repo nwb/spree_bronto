@@ -15,4 +15,5 @@ DelayedSimpleSend = Struct.new(:store_code, :email, :message_name, :attributes, 
       #raise exception   # as now only campaign use this and their templates may not be approved. let it go.
     end
   end
+  alias_method :perform_without_delay, :perform
 end

@@ -5,7 +5,8 @@ DelayedSubscriberAdd = Struct.new(:store_code, :user, :list, :ops) do
       subscriber_id = -1
     else
       begin
-        token= Spree::BrontoConfiguration.account[store_code]['token']
+        bronto_config=Spree::BrontoConfiguration.new
+        token= bronto_config.account[store_code]['token']
         if user.is_a? String
           email=user
         else

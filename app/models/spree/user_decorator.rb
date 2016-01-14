@@ -15,9 +15,9 @@ module Spree
       #trigger the email directly here.
       store_code= current_store.code
       token= Spree::BrontoConfiguration.account[store_code]['token']
-      from_email= current_store.mail_from_address
+      from_email= Spree::BrontoConfiguration.account[store_code][store_code]['from_address']
       from_name= Spree::BrontoConfiguration.account[store_code]['from_name']
-      reply_email= current_store.mail_from_address
+      reply_email= Spree::BrontoConfiguration.account[store_code]['from_address']
       email_options={:fromEmail =>from_email,:fromName => from_name, :replyEmail => reply_email}
 
       user_order=orders.select{|o| o.state='complete'}.last

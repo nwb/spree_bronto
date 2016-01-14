@@ -1,4 +1,4 @@
-DelayedTrigger = Struct.new(:store_code, :email, :message_name, :attributes, :mail_type) do
+DelayedTrigger = Struct.new(:store_code, :email, :message_name, :attributes, :mail_type, :trigger_type) do
   def perform
     return if email.blank?
     begin
@@ -10,7 +10,7 @@ DelayedTrigger = Struct.new(:store_code, :email, :message_name, :attributes, :ma
       email_options={:fromEmail =>from_email,:fromName => from_name, :replyEmail => reply_email}
 
       communication = BrontoIntegration::Communication.new(token)
-      communication.trigger_delivery_by_id(message_name,email,'triggered',mail_type||'html',attributes||{},email_options)
+      communication.trigger_delivery_by_id(message_name,email,trigger_type || 'triggered',mail_type||'html',attributes||{},email_options)
     rescue => exception
       raise exception unless exception.to_s.include? 'Error Code: 30'
     end

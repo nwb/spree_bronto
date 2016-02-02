@@ -4,12 +4,12 @@ Spree::Order.class_eval do
       #OrderMailer.confirm_email(id).deliver_later  # we replace OrderMailer with DelayedSend
 
       external_key = Spree::BrontoConfiguration.account[store.code]["order_received"]
-      DelayedSend.new( store.code,
+      Delayed::Job.enqueue(DelayedSend.new( store.code,
                        email,
                        external_key,
                        id.to_s,
                        "order_mailer/order_confirm_plain",
-                       "order_mailer/order_confirm_html").perform
+                       "order_mailer/order_confirm_html"), {priority: 50})
 
       update_column(:confirmation_delivered, true)
     end
@@ -19,12 +19,12 @@ Spree::Order.class_eval do
       #OrderMailer.cancel_email(id).deliver_later
 
       external_key = Spree::BrontoConfiguration.account[store.code]['order_canceled']
-      DelayedSend.new( store.code,
+      Delayed::Job.enqueue(DelayedSend.new( store.code,
                        email,
                        external_key,
                        id.to_s,
                        "order_mailer/order_cancel_plain",
-                       "order_mailer/order_cancel_html").perform
+                       "order_mailer/order_cancel_html"), {priority: 50})
     end
 
 end

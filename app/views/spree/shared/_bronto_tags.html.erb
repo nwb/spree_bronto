@@ -64,7 +64,7 @@
             "order_id": "<%= "#{"QA-" if request.server_name =~ /^(dev.|staging.|local.)/ }#{@order.number}" %>",
             "email": "<%= @order.email %>",
             "date": "<%= @order.completed_at.iso8601() %>",
-            "items": <%= orderItems %>
+            "items": <%= orderItems.html_safe %>
         };
 
         //bta.addOrder(braOrder)

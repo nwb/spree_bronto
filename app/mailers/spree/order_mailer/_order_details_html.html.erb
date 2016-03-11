@@ -38,12 +38,43 @@
       <td valign="middle" align="right" colspan="2">Sub Total</td>
       <td valign="middle" align="right"><%= number_to_currency order.item_total %></td>
     </tr>
-    <% order.adjustments.each do |adjustment| %>
-      <tr>
-        <td valign="middle" align="right" colspan="2"><%= adjustment.label %></td>
-        <td valign="middle" align="right"><%= number_to_currency adjustment.amount %></td>
-      </tr>
+
+    <% if order.line_item_adjustments.exists? %>
+        <% order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
+            <% if adjustments.sum(&:amount) != 0 %>
+            <tr>
+              <td valign="middle" align="right" colspan="2"><%= label %></td>
+              <td valign="middle" align="right"><%= Spree::Money.new(adjustments.sum(&:amount), :currency => order.currency) %></td>
+            </tr>
+            <% end %>
+        <% end %>
     <% end %>
+
+    <% amount=order.all_adjustments.tax.eligible.sum(:amount)
+       if amount>0 %>
+        <tr>
+          <td valign="middle" align="right" colspan="2"><%= Spree.t(:tax) %></td>
+          <td valign="middle" align="right"><%= Spree::Money.new(amount, :currency => order.currency) %></td>
+        </tr>
+    <% end %>
+
+  <% order.shipments.each do |shipment| %>
+    <tr>
+              <td valign="middle" align="right" colspan="2"><%= Spree.t(:shipping) %></td>
+              <td valign="middle" align="right"><%= shipment.display_discounted_cost %></td>
+            </tr>
+  <% end %>
+
+
+    <% order.adjustments.eligible.group_by(&:label).each do |label, adjustments| %>
+        <% if adjustments.sum(&:amount) != 0 %>
+        <tr>
+          <td valign="middle" align="right" colspan="2"><%= label %></td>
+          <td valign="middle" align="right"><%= Spree::Money.new(adjustments.sum(&:amount), :currency => order.currency) %></td>
+        </tr>
+        <% end %>
+    <% end %>
+
     <tr>
       <td valign="middle" align="right" colspan="2"><strong>Total (USD)</strong></td>
       <td valign="middle" align="right"><strong><%= number_to_currency order.total %></strong></td>

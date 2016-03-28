@@ -9,6 +9,10 @@ DelayedTrigger = Struct.new(:store_code, :email, :message_name, :attributes, :ma
       reply_email= bronto_config.account[store_code]['from_address']
       email_options={:fromEmail =>from_email,:fromName => from_name, :replyEmail => reply_email}
 
+      Delayed::Worker.logger = Logger.new(File.join(Rails.root, 'log', 'dj.log'))
+
+      Delayed::Worker.logger.info("triger email to: #{email} for message #{store_code} #{message_name}")
+
       communication = BrontoIntegration::Communication.new(token)
       communication.trigger_delivery_by_id(message_name,email,trigger_type || 'triggered',mail_type||'html',attributes||{},email_options)
     rescue => exception

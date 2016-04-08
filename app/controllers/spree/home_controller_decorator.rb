@@ -6,7 +6,7 @@ Spree::HomeController.class_eval do
     receipt=params[:receipt] || ''
     subject=params[:subject] || 'Customer Record'
     if receipt.length>0
-      external_key = Spree::BrontoConfiguration.account[current_store.code]["ET_simple_send"]
+      external_key = Spree::BrontoConfiguration.account[current_store.code]["simple_send"]
       params.delete('action')
       params.delete('receipt')
       params.delete('authenticity_token')

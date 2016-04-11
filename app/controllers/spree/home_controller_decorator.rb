@@ -14,13 +14,9 @@ Spree::HomeController.class_eval do
       params.delete('subject')
       params.delete('cc_receipt')
       the_content=''
-      ks=[]
-      vs=[]
       params.each do |k,v|
-        ks << k
-        vs << v
+        the_content += k + ' : ' + v +'<br/>'
       end
-      the_content = ks.join(',') + '<br/>' + vs.join(',')
       et_a={:SENDTIME__CONTENT2 => the_content, :SENDTIME__CONTENT1 => subject}
       #et_a={:SENDTIME__CONTENT2 => 'Name: ' + name +'<br/>Email: ' + email + '<br/>Address: ' + params[:address]  + '<br/>City: ' + params[:city] + '<br/>State: ' + params[:state]  +'<br/>Zip: ' + params[:zip]  +'<br/>Phone: ' + params[:phone]  +'<br/>Credentials: ' + params[:credentials]}
       Delayed::Job.enqueue DelayedSimpleSend.new(current_store.code, receipt, external_key, et_a,'html')

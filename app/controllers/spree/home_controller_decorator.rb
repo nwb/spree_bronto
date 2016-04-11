@@ -15,7 +15,7 @@ Spree::HomeController.class_eval do
       params.delete('cc_receipt')
       the_content=''
       params.each do |k,v|
-        the_content += k + ' : ' + v +'<br/>'
+        the_content += k + ' : ' + v.to_s + '<br/>'
       end
       et_a={:SENDTIME__CONTENT2 => the_content, :SENDTIME__CONTENT1 => subject}
       #et_a={:SENDTIME__CONTENT2 => 'Name: ' + name +'<br/>Email: ' + email + '<br/>Address: ' + params[:address]  + '<br/>City: ' + params[:city] + '<br/>State: ' + params[:state]  +'<br/>Zip: ' + params[:zip]  +'<br/>Phone: ' + params[:phone]  +'<br/>Credentials: ' + params[:credentials]}

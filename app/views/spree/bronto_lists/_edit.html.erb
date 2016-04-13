@@ -1,21 +1,19 @@
+<% web_form_shared_secret= Spree::BrontoConfiguration.account[current_store.code]['web_form_shared_secret']
+   site_id= Spree::BrontoConfiguration.account[current_store.code]['site_id']
+   preference_form_id= Spree::BrontoConfiguration.account[current_store.code]['preference_form_id']
+
+   user_hash =OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), web_form_shared_secret, site_id + preference_form_id + @user.email)
+
+   form_url= "https://app.bronto.com/public/webform/lookup/#{preference_form_id}/#{site_id}/manpref/#{@user.email}/#{user_hash}"
+%>
 <div class="">
 
-<h3><%= t("bronto.my_newsletters") %></h3>
+<h3>Manage my E-mail preferences</h3>
 
-<%= render :partial => 'spree/shared/error_messages', :locals => { :target => @user } %>
-
-<%= form_for(@user, :url => user_path(@user), :html => { :method => :put, :class => "account-summary well" }) do |f| %>
-  <table style="text-align: left">
-    <tr>
-      <th width="70%"><%= t('name') %></th>
-      <th><%= t('bronto.subscribed') %></th>
-    </tr>
-    <%= render :partial => "spree/bronto_lists/form", @collection => @bronto_lists, :locals => { :f => f } %>
-  </table>
-<br/>
-<%= button_tag :class => 'btn btn-submit' do %>
-  <%= t("bronto.update_subscriptions") %>
-<% end %>
-<% end %>
+  <iframe id="bronto_preferences" style="width:100%;background:white;border:none;height:1000px" src="<%= form_url%>"/>
 
 </div>
+
+<script>
+  $('#bronto_preferences').load(function(){$(this).height($(this).contents().outerHeight());});
+</script>

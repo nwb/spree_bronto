@@ -4,13 +4,28 @@
 
    user_hash =OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), web_form_shared_secret, site_id + preference_form_id + @user.email)
 
-   form_url= "https://app.bronto.com/public/webform/lookup/#{preference_form_id}/#{site_id}/manpref/#{@user.email}/#{user_hash}"
+   form_url= "http://app.bronto.com/public/webform/lookup/#{preference_form_id}/#{site_id}/manpref/#{@user.email}/#{user_hash}"
 %>
 <div class="">
 
 <h3>Manage my E-mail preferences</h3>
+ <%
+    def get_html_content(requested_url)
+      url = URI.parse(requested_url)
+      full_path = (url.query.blank?) ? url.path : "#{url.path}?#{url.query}"
+      the_request = Net::HTTP::Get.new(full_path)
 
-  <iframe id="bronto_preferences" style="width:100%;background:white;border:none;height:1000px" src="<%= form_url%>"/>
+      #the_request.use_ssl = (url.scheme == "https")
+
+      the_response = Net::HTTP.start(url.host, url.port) { |http|
+        http.request(the_request)
+      }
+
+      return "<p>Sorry not available at this moment</p>" if !the_response || the_response.code != "200"
+      return the_response.body
+    end
+ %>
+  <%= raw(get_html_content(form_url)) %>
 
 </div>
 

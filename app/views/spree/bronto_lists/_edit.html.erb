@@ -4,7 +4,7 @@
 
    user_hash =OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), web_form_shared_secret, site_id + preference_form_id + @user.email)
 
-   form_url= "http://app.bronto.com/public/webform/lookup/#{preference_form_id}/#{site_id}/manpref/#{@user.email}/#{user_hash}"
+   form_url= "https://app.bronto.com/public/webform/lookup/#{preference_form_id}/#{site_id}/manpref/#{@user.email}/#{user_hash}"
 %>
 <div class="bronto">
 

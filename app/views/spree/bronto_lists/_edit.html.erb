@@ -4,12 +4,12 @@
 
    user_hash =OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), web_form_shared_secret, site_id + preference_form_id + @user.email)
 
-   form_url= "https://app.bronto.com/public/webform/lookup/#{preference_form_id}/#{site_id}/manpref/#{@user.email}/#{user_hash}"
+   form_url= "http://app.bronto.com/public/webform/lookup/#{preference_form_id}/#{site_id}/manpref/#{@user.email}/#{user_hash}"
 %>
 <div class="bronto">
 
 <h3>Manage my E-mail preferences</h3>
-  <iframe id="bronto_preferences" style="width:100%;background:white;border:none;height:1100px" src="<%= form_url%>"/>
+  <a target="_blank" href="<%= form_url%>">Click here to manage your email preferences.</a>
 
 </div>
 

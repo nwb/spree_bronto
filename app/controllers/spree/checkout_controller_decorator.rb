@@ -13,8 +13,10 @@ Spree::CheckoutController.class_eval do
      if params['bronto_list']
        params['bronto_list'].each do |k,v|
          list=Spree::BrontoList.find(k)
-         if k && v && @order.email
+         if k && eval(v) && @order.email
            subscribe_to_list(@order.email, list)
+         elsif @order.email || params['order']['email']
+           create_subscriber(@order.email || params['order']['email'])
          end
        end
      end

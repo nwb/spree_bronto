@@ -3,23 +3,19 @@ module Spree
      extend ActiveSupport::Concern
 
     def autosubscribe_list(store)
-      Spree::BrontoList.where(:store_id =>store.id,:subscribe_all_new_users =>true)
+      lists=Spree::BrontoList.where(:store_id =>store.id,:subscribe_all_new_users =>true)
+      lists[0] if lists
     end
 
     def create_subscriber(user)
-      if user.is_a? String
-        order = Spree::Order.find_by_email(user, :order => "updated_at desc")
-        store= current_order.store
-        list = autosubscribe_list(store) if checkout
-      else
+
         store=current_store
         list = autosubscribe_list(store)
-      end
 
       subscribe_to_list(user, list) unless !list
 
       # synchronize the subscription list from bronto this customer subscribed before registration
-      unless user.is_a? String
+      unless !user || (user.is_a? String)
         begin
           user.reload
           bronto=Bronto.new(Spree::BrontoConfiguration.account[store.code]['bronto_token'])
@@ -74,9 +70,10 @@ module Spree
         pwb_cat=''
       end
       #logger.debug '-- found the pwb_cat: ' + pwb_cat
-      Delayed::Job.enqueue( DelayedSubscriberAdd.new(store_code, user, list, {:C_or_D => pwb_cat}), -20 )
 
-      unless user.is_a? String
+      Delayed::Job.enqueue( DelayedSubscriberAdd.new(store_code, user, list, {:C_or_D => pwb_cat}), {priority: 5} )
+
+      unless !user || (user.is_a? String)
         user.bronto_lists << list
         user.save!
       end
@@ -86,7 +83,7 @@ module Spree
     def unsubscribe_from_list(user, list)
 
       store = current_store
-      Delayed::Job.enqueue( DelayedSubscriberDelete.new(store.code, user, list), -20 )
+      Delayed::Job.enqueue( DelayedSubscriberDelete.new(store.code, user, list), {priority: 5} )
 
       unless user.is_a? String    # update  exact_target_lists
         begin

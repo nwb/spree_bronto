@@ -11,6 +11,8 @@ Spree::Core::Engine.routes.append do
     patch :subscribe, :on => :member
   end
 
+  get "/account/email_preferences", :to => 'users#email_preferences'
+
   post "/subscribenewsletter", :to => 'home#subscribenewsletter'
   post "/subscribecampaign", :to => 'home#subscribecampaign'
   post "/subscribecampaign_with_ops", :to => 'home#subscribecampaign_with_ops'

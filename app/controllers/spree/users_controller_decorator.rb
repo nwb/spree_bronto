@@ -5,6 +5,7 @@ Spree::UsersController.class_eval do
   before_action :check_newsletter
 
   def email_preferences
+    @body_class="_account"
     redirect_to spree.login_url unless @user=current_spree_user
   end
 private

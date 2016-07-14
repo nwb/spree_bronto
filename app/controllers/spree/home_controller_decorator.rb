@@ -52,6 +52,33 @@ Spree::HomeController.class_eval do
 
   end
 
+  #accept list lists to signup
+  def subscribenewsletters
+    name=params[:name] || ''
+    email=params[:email]
+    campaign_ids=params[:campaign_ids] || []
+    if email.length>0
+      campaign_ids.each do |campaign_id|
+      campaign=Spree::BrontoList.find_by_list_id(campaign_id)
+      if !!campaign
+        Delayed::Job.enqueue DelayedSubscriberAdd.new(current_store.code, email, campaign, {:First_Name => name})
+      end
+      end
+      render :json => ({
+                 :success => true,
+                 :message => t( :subscription_sent )
+             }).to_json
+    else
+      render :json => ({
+                 :success => false,
+                 :message => t( :subscription_notsent )
+             }).to_json
+    end
+    #redirect_to "/meetexperts"
+    #render :js =>'alert("Our server temperarily busy, please try again later.")'
+
+  end
+
   # sign up compaign flexible form, like the one for newsletter.
   def subscribecampaign
     name=params[:name] || ''

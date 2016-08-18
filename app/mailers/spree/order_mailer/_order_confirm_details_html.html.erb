@@ -1,0 +1,412 @@
+
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+    body { margin:0 !important; }
+    div[style*="margin: 16px 0"] { margin:0 !important; font-size:100% !important; }
+    div, p, a, li, td { -webkit-text-size-adjust:none; }
+    .appleLinksBlacka {color:#333333; text-decoration: none;}
+    @media only screen and (max-width:480px){
+        table[class=mainTable]{
+            width:100% !important;
+            border:none !important;
+        }
+        td[class=noDisplay]{
+            padding:0 !important;
+            display:none !important;
+        }
+
+        /* Order Styles*/
+        td[class=orderDetails]{
+            padding: 10px !important;
+        }
+        td[class=order]{
+            padding:0 10px 30px !important;
+            line-height:150% !important;
+        }
+        td[class=orderNo],td[class=orderDate]{
+            display:block !important;
+            width:100% !important;
+            text-align:left !important;
+            font-size:14px !important;
+        }
+        td[class=orderNo]{
+            padding:0 0 5px !important;
+        }
+        td[class=addressContainer]{
+            padding:30px 10px !important;
+        }
+        td[class=deliveryCol],td[class=billingCol]{
+            display:block !important;
+            width:100% !important;
+            text-align:left !important;
+        }
+        td[class=deliveryCol]{
+            padding: 0 0 30px !important;
+        }
+        table[class=billingTable]{
+            width:100% !important;
+            float:none !important;
+            text-align:left !important;
+        }
+
+        td[class=pdtImgContainer],td[class=pdtDetails]{
+            width:100% !important;
+            display:block !important;
+        }
+        td[class=pdtImgContainer]{
+            text-align:center !important;
+            padding:0 0 30px !important;
+        }
+        td[class=header]{
+            text-align:center !important;
+        }
+    }
+</style>
+
+<body style="margin: 0px;padding:0; background-color:#ffffff;" bgcolor="#ffffff">
+<!--100% body table-->
+<table width="100%" cellspacing="0" border="0" cellpadding="0" bgcolor="#ffffff">
+  <tr><td valign="top" align="center">
+
+    <!--*******************************ORDER***************************************-->
+    <table width="620" bgcolor="#ffffff" style="width:620px;background-color: #ffffff;" border="0" align="center" cellpadding="0" cellspacing="0" class="mainTable">
+
+      <!--*********************Order No. & Date*********************-->
+      <tr><td valign="top" style="padding-bottom:7px;border-bottom:2px solid #029eca;" class="orderDetails">
+        <table width="100%" cellspacing="0" border="0" cellpadding="0">
+          <tr>
+
+            <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#333333;" class="orderNo">
+              <span style="font-weight:bold;">Order No.</span> <%= order.number %>
+            </td>
+
+            <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#333333;" class="orderDate">
+              <span style="font-weight:bold;">Placed on:</span> <%= order.completed_at.strftime("%B %d %Y at %I:%M %p") %>
+            </td>
+
+          </tr>
+        </table>
+      </td></tr>
+
+
+      <!--*********************Delivery & Billing Address*********************-->
+      <tr><td valign="top" style="padding-top:30px;padding-bottom:50px;" class="addressContainer">
+        <table width="100%" cellspacing="0" border="0" cellpadding="0">
+          <tr>
+
+            <!--Delivery Address-->
+            <td valign="top" width="50%" class="deliveryCol">
+              <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                <tr>
+                  <td valign="top" width="25" align="left">
+                    <img src="http://hosting-source.bm23.com/34885/public/Transactional/delivery_pwb.png" width="25" height="23" alt="" style="vertical-align:middle;" border="0"/>
+                  </td>
+
+                  <td valign="top" width="10">&nbsp;</td>
+
+                  <td valign="top">
+                    <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                      <tr><td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:18px;color:#666666;font-weight:bold;padding-bottom:7px;">
+                        Delivery Address
+                      </td></tr>
+                      <% address=!order.ship_address ? order.bill_address : order.ship_address %>
+                      <tr><td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#666666;line-height:150%;">
+                        <%= address.firstname %> <%= address.lastname %><br>
+                        <%= address.address1 %><br />
+                        <% unless address.address2.blank? %>
+                            <%= address.address2 %><br />
+                        <% end %>
+                        <%= address.city %>
+                        <% if address.state_id.blank? %>
+                            <br /><%= address.state_name %><br />
+                        <% else %>
+                            <%= address.state.abbr %><br />
+                        <% end %>
+                        <%= address.country.name %> <%= address.zipcode %>
+                      </td></tr>
+                    </table>
+                  </td>
+
+                </tr>
+              </table>
+            </td>
+
+
+            <!--Billing Address-->
+            <td valign="top" width="50%" align="right" class="billingCol">
+              <table cellspacing="0" border="0" cellpadding="0" align="left" class="billingTable">
+                <tr>
+                  <td valign="top" width="21" align="left">
+                    <img src="http://hosting-source.bm23.com/34885/public/Transactional/billing_pwb.png" width="25" height="25" alt="" style="vertical-align:middle;" border="0"/>
+                  </td>
+
+                  <td valign="top" width="10">&nbsp;</td>
+
+                  <td valign="top" align="right">
+                    <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                      <tr><td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:18px;color:#666666;font-weight:bold;padding-bottom:7px;">
+                        Billing Address
+                      </td></tr>
+                      <% address=!order.bill_address ? order.ship_address : order.bill_address %>
+                      <tr><td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#666666;line-height:150%;">
+                        <%= address.firstname %> <%= address.lastname %><br>
+                        <%= address.address1 %><br />
+                        <% unless address.address2.blank? %>
+                            <%= address.address2 %><br />
+                        <% end %>
+                        <%= address.city %>
+                        <% if address.state_id.blank? %>
+                            <br /><%= address.state_name %><br />
+                        <% else %>
+                            <%= address.state.abbr %><br />
+                        <% end %>
+                        <%= address.country.name %> <%= address.zipcode %>
+                      </td></tr>
+                    </table>
+                  </td>
+
+                </tr>
+              </table>
+            </td>
+
+          </tr>
+        </table>
+      </td></tr>
+
+      <tr><td valign="top" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#333333;padding-bottom:30px;" class="order">
+        Your <span class="appleLinksBlack"><%= order.store.name %></span> order includes the following item(s):
+      </td></tr>
+
+      <% order.line_items.each do |item| %>
+          <!--*********************Product List*********************-->
+          <tr><td valign="top" style="padding-bottom:30px;">
+            <table width="100%" cellspacing="0" border="0" cellpadding="0">
+              <tr><td valign="top" style="padding-top:30px;padding-bottom:30px;padding-left:25px;padding-right:25px;" bgcolor="#eeeeee">
+                <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                  <tr>
+                    <!--Image-->
+
+                    <td valign="middle" align="center" class="pdtImgContainer">
+                      <a href="#" target="_blank"><img src=<%=item.variant.product.images.first.attachment.url(:original)%> height="200" alt="Product Image" style="vertical-align:middle;" border="0"/></a>
+                    </td>
+
+                    <td width="60" valign="top" class="noDisplay">&nbsp;</td>
+
+                    <!--Product Details-->
+                    <td width="310" valign="middle" class="pdtDetails">
+                      <table width="100%" cellspacing="0" border="0" cellpadding="0">
+
+                        <tr><td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:20px;color:#333333;font-weight:bold;padding-bottom:25px;" class="header">
+                          <%= Rack::Utils.escape_html(item.variant.product.name.gsub!(/[^0-9A-Za-z]/, ' ')) %>
+                        </td></tr>
+
+                        <tr><td valign="top">
+                          <table width="100%" cellspacing="0" border="0" cellpadding="0">
+
+                            <!--SKU-->
+                            <tr><td valign="top" style="padding-bottom:10px;border-bottom:1px solid #ffffff;">
+                              <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                                <tr>
+                                  <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                                    SKU:
+                                  </td>
+                                  <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                                    <%= item.variant.sku %>
+                                  </td>
+
+                                </tr>
+                              </table>
+                            </td></tr>
+
+                            <!--Qty-->
+                            <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;border-bottom:1px solid #ffffff;">
+                              <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                                <tr>
+                                  <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                                    Qty:
+                                  </td>
+                                  <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                                    <%= item.quantity %>
+                                  </td>
+
+                                </tr>
+                              </table>
+                            </td></tr>
+
+                            <!--Price-->
+                            <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;border-bottom:1px solid #ffffff;">
+                              <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                                <tr>
+                                  <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                                    Price:
+                                  </td>
+                                  <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                                    <%= number_to_currency item.price %>
+                                  </td>
+
+                                </tr>
+                              </table>
+                            </td></tr>
+
+                            <!--Total-->
+                            <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;">
+                              <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                                <tr>
+                                  <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                                    Total:
+                                  </td>
+                                  <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                                    <%= number_to_currency(item.price * item.quantity) %>
+                                  </td>
+
+                                </tr>
+                              </table>
+                            </td></tr>
+
+                          </table>
+                        </td></tr>
+
+                      </table>
+                    </td>
+
+                  </tr>
+                </table>
+              </td></tr>
+            </table>
+          </td></tr>
+      <% end %>
+      <!--***********************************Order Summary*********************************-->
+      <tr><td valign="top">
+        <table width="100%" cellspacing="0" border="0" cellpadding="0">
+          <tr><td valign="top" style="padding-top:30px;padding-bottom:30px;padding-left:25px;padding-right:25px;" bgcolor="#eeeeee">
+            <table width="100%" cellspacing="0" border="0" cellpadding="0">
+
+              <tr><td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:20px;color:#333333;font-weight:bold;padding-bottom:25px;" class="header">
+                Order Summary
+              </td></tr>
+
+              <tr><td valign="top">
+                <table width="100%" cellspacing="0" border="0" cellpadding="0">
+
+                  <!--SubTotal:-->
+                  <tr><td valign="top" style="padding-bottom:10px;border-bottom:1px solid #ffffff;">
+                    <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                      <tr>
+                        <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                          SubTotal:
+                        </td>
+                        <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                          <%= number_to_currency order.item_total %>
+                        </td>
+
+                      </tr>
+                    </table>
+                  </td></tr>
+
+
+                  <% if order.line_item_adjustments.exists? %>
+                      <% order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
+                          <% if adjustments.sum(&:amount) != 0 %>
+                              <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;border-bottom:1px solid #ffffff;">
+                                <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                                  <tr>
+                                    <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                                      <%= label %>
+                                    </td>
+                                    <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                                      <%= Spree::Money.new(adjustments.sum(&:amount), :currency => order.currency) %>
+                                    </td>
+
+                                  </tr>
+                                </table>
+                              </td></tr>
+                         <% end %>
+                      <% end %>
+                  <% end %>
+
+                  <% amount=order.all_adjustments.tax.eligible.sum(:amount)
+                     if amount>0 %>
+                      <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;border-bottom:1px solid #ffffff;">
+                        <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                          <tr>
+                            <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                              <%= Spree.t(:tax) %>
+                            </td>
+                            <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                              <%= Spree::Money.new(amount, :currency => order.currency) %>
+                            </td>
+
+                          </tr>
+                        </table>
+                      </td></tr>
+                  <% end %>
+
+                  <% order.shipments.each do |shipment| %>
+                      <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;border-bottom:1px solid #ffffff;">
+                        <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                          <tr>
+                            <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                              <%= Spree.t(:shipping) %>
+                            </td>
+                            <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                              <%= shipment.display_discounted_cost %>
+                            </td>
+
+                          </tr>
+                        </table>
+                      </td></tr>
+                  <% end %>
+
+                  <% order.adjustments.eligible.group_by(&:label).each do |label, adjustments| %>
+                      <% if adjustments.sum(&:amount) != 0 %>
+                          <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;border-bottom:1px solid #ffffff;">
+                            <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                              <tr>
+                                <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                                  <%= label %>
+                                </td>
+                                <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                                  <%= Spree::Money.new(adjustments.sum(&:amount), :currency => order.currency) %>
+                                </td>
+
+                              </tr>
+                            </table>
+                          </td></tr>
+                      <% end %>
+                  <% end %>
+
+
+                  <!--Total(USD):-->
+                  <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;">
+                    <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                      <tr>
+                        <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:18px;font-weight:bold;color:#000000;">
+                          Total(USD):
+                        </td>
+                        <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:18px;font-weight:bold;color:#000000;">
+                          <%= number_to_currency order.total %>
+                        </td>
+
+                      </tr>
+                    </table>
+                  </td></tr>
+
+                </table>
+              </td></tr>
+
+            </table>
+          </td>
+
+          </tr>
+        </table>
+      </td></tr>
+
+
+
+
+    </table><!--620px Main table ends here-->
+
+
+  </td></tr>
+</table>
+</body>

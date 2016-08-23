@@ -4,7 +4,8 @@
     body { margin:0 !important; }
     div[style*="margin: 16px 0"] { margin:0 !important; font-size:100% !important; }
     div, p, a, li, td { -webkit-text-size-adjust:none; }
-    .appleLinksBlacka {color:#333333; text-decoration: none;}
+    .appleLinksBlack a{color:#666666; text-decoration: none;}
+    .appleLinksDBlack a{color:#333333; text-decoration: none;}
     @media only screen and (max-width:480px){
         table[class=mainTable]{
             width:100% !important;
@@ -109,20 +110,23 @@
                       <tr><td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:18px;color:#666666;font-weight:bold;padding-bottom:7px;">
                         Delivery Address
                       </td></tr>
+
                       <% address=!order.ship_address ? order.bill_address : order.ship_address %>
                       <tr><td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#666666;line-height:150%;">
-                        <%= address.firstname %> <%= address.lastname %><br>
-                        <%= address.address1 %><br />
-                        <% unless address.address2.blank? %>
-                            <%= address.address2 %><br />
-                        <% end %>
-                        <%= address.city %>
-                        <% if address.state_id.blank? %>
-                            <br /><%= address.state_name %><br />
-                        <% else %>
-                            <%= address.state.abbr %><br />
-                        <% end %>
-                        <%= address.country.name %> <%= address.zipcode %>
+                        <span class="appleLinksBlack">
+                            <%= address.firstname %> <%= address.lastname %><br>
+                            <%= address.address1 %><br />
+                            <% unless address.address2.blank? %>
+                                <%= address.address2 %><br />
+                            <% end %>
+                            <%= address.city %>
+                            <% if address.state_id.blank? %>
+                                <br /><%= address.state_name %><br />
+                            <% else %>
+                                <%= address.state.abbr %><br />
+                            <% end %>
+                            <%= address.country.name %> <%= address.zipcode %>
+                        </span>
                       </td></tr>
                     </table>
                   </td>

@@ -11,7 +11,7 @@ Spree::ShipmentHandler.class_eval do
                        external_key,
                        order.id.to_s,
                        "order_mailer/order_shipped_plain",
-                       "order_mailer/order_shipped_html").perform
+                       "order_mailer/order_shipped_details_html").perform
     end
 
 end

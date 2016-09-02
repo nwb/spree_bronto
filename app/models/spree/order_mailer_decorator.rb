@@ -9,7 +9,7 @@ Spree::OrderMailer.class_eval do
                                           external_key,
                                           @order.id.to_s,
                                           "order_mailer/order_confirm_plain",
-                                          "order_mailer/order_confirm_html"), {priority: 50})
+                                          "order_mailer/order_confirm_details_html"), {priority: 50})
 
   end
 end

@@ -1,83 +1,227 @@
-<div align="center">
-  <table border="0" cellspacing="1" cellpadding="5" class="products" width="500">
-    <tr>
-      <td valign="top" align="center"><strong>QTY</strong></td>
-      <td valign="top"><strong>Name</strong></td>
-      <td valign="top" align="center"><strong>SKU</strong></td>
-      <td valign="top" align="center"><strong>Each</strong></td>
-      <td valign="top" align="center"><strong>Total</strong></td>
-    </tr>
-    <% order.line_items.each do |item| %>
-      <tr>
-        <td valign="middle" align="center" bgcolor="#ebf3f8"><%= item.quantity %></td>
-        <td valign="middle" align="left" bgcolor="#ebf3f8"><%= Rack::Utils.escape_html(item.variant.product.name.gsub!(/[^0-9A-Za-z]/, ' ')) %></td>
-        <td valign="middle" align="center" bgcolor="#ebf3f8"><%= item.variant.sku %></td>
-        <td valign="middle" align="center" bgcolor="#ebf3f8"><%= number_to_currency item.price %></td>
-        <td valign="middle" align="right" bgcolor="#ebf3f8"><%= number_to_currency(item.price * item.quantity) %></td>
-      </tr>
-    <% end %>
-    <tr>
-      <td valign="top" align="left" colspan="2" rowspan="6" class="bigger">
-        <br />
-        <p><strong>These items will be shipped to:</strong><br />
-          <% address=!order.ship_address ? order.bill_address : order.ship_address %>
-          <%= address.firstname %> <%= address.lastname %><br />
-          <%= address.address1 %><br />
-          <% unless address.address2.blank? %>
-            <%= address.address2 %><br />
-          <% end %>
-          <%= address.city %>
-          <% if address.state_id.blank? %>
-            <br /><%= address.state_name %><br />
-          <% else %>
-            <%= address.state.abbr %><br />
-          <% end %>
-          <%= address.country.name %> <%= address.zipcode %>
-        </p>
-      </td>
-      <td valign="middle" align="right" colspan="2">Sub Total</td>
-      <td valign="middle" align="right"><%= number_to_currency order.item_total %></td>
-    </tr>
+<tr><td valign="top" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#333333;padding-bottom:30px;" class="order">
+  Your <span class="appleLinksBlack"><%= order.store.name %></span> order includes the following item(s):
+</td></tr>
 
-    <% if order.line_item_adjustments.exists? %>
-        <% order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
-            <% if adjustments.sum(&:amount) != 0 %>
+<% order.line_items.each do |item| %>
+    <!--*********************Product List*********************-->
+    <tr><td valign="top" style="padding-bottom:30px;">
+      <table width="100%" cellspacing="0" border="0" cellpadding="0">
+        <tr><td valign="top" style="padding-top:30px;padding-bottom:30px;padding-left:25px;padding-right:25px;" bgcolor="#eeeeee">
+          <table width="100%" cellspacing="0" border="0" cellpadding="0">
             <tr>
-              <td valign="middle" align="right" colspan="2"><%= label %></td>
-              <td valign="middle" align="right"><%= Spree::Money.new(adjustments.sum(&:amount), :currency => order.currency) %></td>
+              <!--Image-->
+
+              <td valign="middle" align="center" class="pdtImgContainer">
+                <a href="#" target="_blank"><img src=<%=item.variant.product.images.first.attachment.url(:original)%> height="200" alt="Product Image" style="vertical-align:middle;background-color: #FFFFFF;height:200px !important" border="0"/></a>
+              </td>
+
+              <td width="60" valign="top" class="noDisplay">&nbsp;</td>
+
+              <!--Product Details-->
+              <td width="310" valign="middle" class="pdtDetails">
+                <table width="100%" cellspacing="0" border="0" cellpadding="0">
+
+                  <tr><td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:20px;color:#333333;font-weight:bold;padding-bottom:25px;" class="header">
+                    <%= Rack::Utils.escape_html(item.variant.product.name.gsub!(/[^0-9A-Za-z]/, ' ')) %>
+                  </td></tr>
+
+                  <tr><td valign="top">
+                    <table width="100%" cellspacing="0" border="0" cellpadding="0">
+
+                      <!--SKU-->
+                      <tr><td valign="top" style="padding-bottom:10px;border-bottom:1px solid #ffffff;">
+                        <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                          <tr>
+                            <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                              SKU:
+                            </td>
+                            <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                              <%= item.variant.sku %>
+                            </td>
+
+                          </tr>
+                        </table>
+                      </td></tr>
+
+                      <!--Qty-->
+                      <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;border-bottom:1px solid #ffffff;">
+                        <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                          <tr>
+                            <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                              Qty:
+                            </td>
+                            <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                              <%= item.quantity %>
+                            </td>
+
+                          </tr>
+                        </table>
+                      </td></tr>
+
+                      <!--Price-->
+                      <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;border-bottom:1px solid #ffffff;">
+                        <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                          <tr>
+                            <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                              Price:
+                            </td>
+                            <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                              <%= number_to_currency item.price %>
+                            </td>
+
+                          </tr>
+                        </table>
+                      </td></tr>
+
+                      <!--Total-->
+                      <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;">
+                        <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                          <tr>
+                            <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                              Total:
+                            </td>
+                            <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                              <%= number_to_currency(item.price * item.quantity) %>
+                            </td>
+
+                          </tr>
+                        </table>
+                      </td></tr>
+
+                    </table>
+                  </td></tr>
+
+                </table>
+              </td>
+
             </tr>
+          </table>
+        </td></tr>
+      </table>
+    </td></tr>
+<% end %>
+<!--***********************************Order Summary*********************************-->
+<tr><td valign="top">
+  <table width="100%" cellspacing="0" border="0" cellpadding="0">
+    <tr><td valign="top" style="padding-top:30px;padding-bottom:30px;padding-left:25px;padding-right:25px;" bgcolor="#eeeeee">
+      <table width="100%" cellspacing="0" border="0" cellpadding="0">
+
+        <tr><td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:20px;color:#333333;font-weight:bold;padding-bottom:25px;" class="header">
+          Order Summary
+        </td></tr>
+
+        <tr><td valign="top">
+          <table width="100%" cellspacing="0" border="0" cellpadding="0">
+
+            <!--SubTotal:-->
+            <tr><td valign="top" style="padding-bottom:10px;border-bottom:1px solid #ffffff;">
+              <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                <tr>
+                  <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                    SubTotal:
+                  </td>
+                  <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                    <%= number_to_currency order.item_total %>
+                  </td>
+
+                </tr>
+              </table>
+            </td></tr>
+
+
+            <% if order.line_item_adjustments.exists? %>
+                <% order.line_item_adjustments.promotion.eligible.group_by(&:label).each do |label, adjustments| %>
+                    <% if adjustments.sum(&:amount) != 0 %>
+                        <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;border-bottom:1px solid #ffffff;">
+                          <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                            <tr>
+                              <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                                <%= label %>
+                              </td>
+                              <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                                <%= Spree::Money.new(adjustments.sum(&:amount), :currency => order.currency) %>
+                              </td>
+
+                            </tr>
+                          </table>
+                        </td></tr>
+                    <% end %>
+                <% end %>
             <% end %>
-        <% end %>
-    <% end %>
 
-    <% amount=order.all_adjustments.tax.eligible.sum(:amount)
-       if amount>0 %>
-        <tr>
-          <td valign="middle" align="right" colspan="2"><%= Spree.t(:tax) %></td>
-          <td valign="middle" align="right"><%= Spree::Money.new(amount, :currency => order.currency) %></td>
-        </tr>
-    <% end %>
+            <% amount=order.all_adjustments.tax.eligible.sum(:amount)
+               if amount>0 %>
+                <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;border-bottom:1px solid #ffffff;">
+                  <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                    <tr>
+                      <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                        <%= Spree.t(:tax) %>
+                      </td>
+                      <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                        <%= Spree::Money.new(amount, :currency => order.currency) %>
+                      </td>
 
-  <% order.shipments.each do |shipment| %>
-    <tr>
-              <td valign="middle" align="right" colspan="2"><%= Spree.t(:shipping) %></td>
-              <td valign="middle" align="right"><%= shipment.display_discounted_cost %></td>
-            </tr>
-  <% end %>
+                    </tr>
+                  </table>
+                </td></tr>
+            <% end %>
+
+            <% order.shipments.each do |shipment| %>
+                <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;border-bottom:1px solid #ffffff;">
+                  <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                    <tr>
+                      <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                        <%= Spree.t(:shipping) %>
+                      </td>
+                      <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                        <%= shipment.display_discounted_cost %>
+                      </td>
+
+                    </tr>
+                  </table>
+                </td></tr>
+            <% end %>
+
+            <% order.adjustments.eligible.group_by(&:label).each do |label, adjustments| %>
+                <% if adjustments.sum(&:amount) != 0 %>
+                    <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;border-bottom:1px solid #ffffff;">
+                      <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                        <tr>
+                          <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#888888;">
+                            <%= label %>
+                          </td>
+                          <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
+                            <%= Spree::Money.new(adjustments.sum(&:amount), :currency => order.currency) %>
+                          </td>
+
+                        </tr>
+                      </table>
+                    </td></tr>
+                <% end %>
+            <% end %>
 
 
-    <% order.adjustments.eligible.group_by(&:label).each do |label, adjustments| %>
-        <% if adjustments.sum(&:amount) != 0 %>
-        <tr>
-          <td valign="middle" align="right" colspan="2"><%= label %></td>
-          <td valign="middle" align="right"><%= Spree::Money.new(adjustments.sum(&:amount), :currency => order.currency) %></td>
-        </tr>
-        <% end %>
-    <% end %>
+            <!--Total(USD):-->
+            <tr><td valign="top" style="padding-bottom:10px;padding-top:10px;">
+              <table width="100%" cellspacing="0" border="0" cellpadding="0">
+                <tr>
+                  <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:18px;font-weight:bold;color:#000000;">
+                    Total(USD):
+                  </td>
+                  <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:18px;font-weight:bold;color:#000000;">
+                    <%= number_to_currency order.total %>
+                  </td>
 
-    <tr>
-      <td valign="middle" align="right" colspan="2"><strong>Total (USD)</strong></td>
-      <td valign="middle" align="right"><strong><%= number_to_currency order.total %></strong></td>
+                </tr>
+              </table>
+            </td></tr>
+
+          </table>
+        </td></tr>
+
+      </table>
+    </td>
+
     </tr>
   </table>
-</div>
+</td></tr>

@@ -1,5 +1,5 @@
 <% tagkey= Spree::BrontoConfiguration.account[current_store.code]['tagkey']%>
-
+<% if !!tagkey %>
 <script type="text/javascript">
     var _bsw = _bsw || [];
     _bsw.push(['_bswId', '<%= tagkey %>']);
@@ -71,5 +71,6 @@
     </script>
 
 
+<% end %>
 <% end %>
 

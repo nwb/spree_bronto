@@ -1,6 +1,7 @@
 <tr><td valign="top" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#333333;padding-bottom:30px;" class="order">
   Your <span class="appleLinksBlack"><%= order.store.name %></span> order includes the following item(s):
 </td></tr>
+<%domain = 'http://' + order.store.url + '/' %>
 
 <% order.line_items.each do |item| %>
     <!--*********************Product List*********************-->
@@ -10,9 +11,9 @@
           <table width="100%" cellspacing="0" border="0" cellpadding="0">
             <tr>
               <!--Image-->
-
+                <%producturl = domain + 'products/' + item.variant.product.slug %>
               <td valign="middle" align="center" class="pdtImgContainer" style="background-color:#FFFFFF;">
-                <a href="#" target="_blank"><img src=<%=item.variant.product.images.first.attachment.url(:original)%> height="200" alt="Product Image" style="vertical-align:middle;background-color: #FFFFFF;height:200px !important" border="0"/></a>
+                <a href="<%= producturl%>" target="_blank"><img src=<%=item.variant.product.images.first.attachment.url(:original)%> height="200" alt="Product Image" style="vertical-align:middle;background-color: #FFFFFF;height:200px !important" border="0"/></a>
               </td>
 
               <td width="60" valign="top" class="noDisplay">&nbsp;</td>

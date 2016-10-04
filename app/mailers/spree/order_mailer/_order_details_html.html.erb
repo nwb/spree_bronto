@@ -67,7 +67,7 @@
                               Price:
                             </td>
                             <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
-                              <%= number_to_currency item.price %>
+                              <%= Spree::Money.new(item.price, :currency => order.currency) %>
                             </td>
 
                           </tr>
@@ -82,7 +82,7 @@
                               Total:
                             </td>
                             <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
-                              <%= number_to_currency(item.price * item.quantity) %>
+                              <%= Spree::Money.new(item.price * item.quantity, :currency => order.currency)%>
                             </td>
 
                           </tr>
@@ -122,7 +122,7 @@
                     SubTotal:
                   </td>
                   <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
-                    <%= number_to_currency order.item_total %>
+                    <%= Spree::Money.new(order.item_total, :currency => order.currency) %>
                   </td>
 
                 </tr>
@@ -175,7 +175,7 @@
                         <%= Spree.t(:shipping) %>
                       </td>
                       <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:16px;color:#000000;">
-                        <%= shipment.display_discounted_cost %>
+                        <%= Spree::Money.new(shipment.display_discounted_cost, :currency => order.currency)%>
                       </td>
 
                     </tr>
@@ -207,10 +207,10 @@
               <table width="100%" cellspacing="0" border="0" cellpadding="0">
                 <tr>
                   <td valign="top" align="left" style="font-family:Lato,Arial,sans-serif;font-size:18px;font-weight:bold;color:#000000;">
-                    Total(USD):
+                    Total(<%=order.currency%>):
                   </td>
                   <td valign="top" align="right" style="font-family:Lato,Arial,sans-serif;font-size:18px;font-weight:bold;color:#000000;">
-                    <%= number_to_currency order.total %>
+                    <%= Spree::Money.new(order.total, :currency => order.currency)%>
                   </td>
 
                 </tr>

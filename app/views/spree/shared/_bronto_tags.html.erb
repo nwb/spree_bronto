@@ -44,7 +44,7 @@
             "subtotal": <%= @order.item_total.to_s %>,
             "discountAmount": <%= (100*@order.line_item_adjustments.promotion.eligible.map{|t| t.amount}.sum).to_i/100.00 %>,
             "url": "http://www.<%= current_store.name.downcase %>/cart",
-            "currency": "USD",
+            "currency": "<%= @order.currency %>",
             "taxAmount": <%= (100*@order.line_item_adjustments.tax.eligible.map{|t| t.amount}.sum).to_i/100.00 %>,
             "lineItems": <%= cartItems.html_safe %>
         };

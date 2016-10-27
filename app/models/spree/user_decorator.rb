@@ -76,7 +76,7 @@ module Spree
           contact.update_status(email,'active')
           communication.trigger_delivery_by_id(message_name,email,'triggered','html',attributes,email_options)
         rescue => exception
-          raise exception
+          #raise exception
         end
       end
     end

@@ -4,6 +4,7 @@
 <%domain = 'http://' + order.store.url + '/' %>
 
 <% order.line_items.each do |item| %>
+    <%product_image = item.variant.product.images.length>0 ? item.variant.product.images.first.attachment.url(:original) : 'https://www.naturalwellbeing.com/assets/noimage/product.jpg'%>
     <!--*********************Product List*********************-->
     <tr><td valign="top" style="padding-bottom:30px;">
       <table width="100%" cellspacing="0" border="0" cellpadding="0">
@@ -13,7 +14,7 @@
               <!--Image-->
                 <%producturl = domain + 'products/' + item.variant.product.slug %>
               <td valign="middle" align="center" class="pdtImgContainer" style="background-color:#FFFFFF;">
-                <a href="<%= producturl%>" target="_blank"><img src=<%=item.variant.product.images.first.attachment.url(:original)%> height="200" alt="Product Image" style="vertical-align:middle;background-color: #FFFFFF;height:200px !important" border="0"/></a>
+                <a href="<%= producturl%>" target="_blank"><img src=<%=product_image%> height="200" alt="Product Image" style="vertical-align:middle;background-color: #FFFFFF;height:200px !important" border="0"/></a>
               </td>
 
               <td width="60" valign="top" class="noDisplay">&nbsp;</td>

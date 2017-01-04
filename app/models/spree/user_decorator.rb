@@ -24,8 +24,8 @@ module Spree
 
       message_name= Spree::BrontoConfiguration.account[current_store.code]['password_reset']
 
-      attributes = {:First_Name => user_order.ship_address.firstname} unless !user_order
-      attributes = {:First_Name => user_order.ship_address.lastname} unless !user_order
+      attributes = {:First_Name => user_order.ship_address.firstname} if (user_order && user_order.ship_address)
+      attributes = {:First_Name => user_order.ship_address.lastname} if (user_order && user_order.ship_address)
 
       attributes||={}
       attributes[:SENDTIME__CONTENT1] = reset_password_token

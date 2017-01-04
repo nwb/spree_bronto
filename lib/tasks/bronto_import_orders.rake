@@ -37,29 +37,24 @@ namespace :spree do
         time = DateTime.parse(time).strftime("%Y%m%d_%H_%M")
         #sftp
         Spree::Store.all.each do |store|
+
           config=Spree::BrontoConfiguration.account["#{store.code}"]
           Net::SFTP.start(config["ftp_host"], config["ftp_username"], :password => config["ftp_password"],:port=>config["stfp_port"]) do |sftp|
             # open and write to a pseudo-IO for a remote file
-            file_content=get_html_content("https://#{store.url}/feed/bronto_orders.csv?numofday=30")
-            filename=  store.code+'_orders_'+time
-puts filename
-puts file_content
-
+            file_content=get_html_content("https://#{store.url}/feed/bronto_orders.csv")
+            filename=  store.code+'_orders_'+time +".csv"
             sftp.file.open(filename, "w") do |f|
-puts 'here1'
-              report << "upload the #{store.code} orders to bronto"
-puts 'here2'
+              report << "upload the #{store.code} orders to bronto, #{filename}"
               f.puts file_content
-puts 'here3'
             end
           end
+
         end
 
         result = true
 
         [result, report]
       end
-
 
 
       def get_html_content(requested_url)

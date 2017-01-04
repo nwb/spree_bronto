@@ -40,7 +40,7 @@ namespace :spree do
           config=Spree::BrontoConfiguration.account["#{store.code}"]
           Net::SFTP.start(config["ftp_host"], config["ftp_username"], :password => config["ftp_password"],:port=>config["stfp_port"]) do |sftp|
             # open and write to a pseudo-IO for a remote file
-            file_content=get_html_content("http://#{store.url}/feed/bronto_orders.csv?numofday=30")
+            file_content=get_html_content("https://#{store.url}/feed/bronto_orders.csv?numofday=30")
             filename=  store.code+'_orders_'+time
 puts filename
 puts file_content

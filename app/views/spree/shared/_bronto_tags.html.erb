@@ -22,7 +22,7 @@
        cartItems += '{"other": "'+ item.variant.sku
        cartItems += '", "imageUrl": "' + ERB::Util.html_escape(img_url)
        cartItems += '", "unitPrice": ' + item.price.to_s
-       cartItems += ', "sku": "' + item.variant.id
+       cartItems += ', "sku": "' + item.variant.id.to_s
        cartItems += '", "category": "'
        cartItems += '", "description": "'
        cartItems += '", "productUrl": "' + 'http://www.' + current_store.name.downcase + '/products/' + item.product.slug

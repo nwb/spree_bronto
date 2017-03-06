@@ -19,8 +19,8 @@
          else
          img_url=variant.images.first.attachment.url(:small)
        end
-       cartItems += '{"other": null'+ item.variant.sku
-       cartItems += ', "imageUrl": "' + ERB::Util.html_escape(img_url)
+       cartItems += '{"other": "'+ item.variant.sku
+       cartItems += '", "imageUrl": "' + ERB::Util.html_escape(img_url)
        cartItems += '", "unitPrice": ' + item.price.to_s
        cartItems += ', "sku": "' + item.variant.id
        cartItems += '", "category": "'

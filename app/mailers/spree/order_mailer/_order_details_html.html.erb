@@ -4,7 +4,7 @@
 <%domain = 'http://' + order.store.url + '/' %>
 
 <% order.line_items.each do |item| %>
-    <%product_image = item.variant.product.images.length>0 ? item.variant.product.images.first.attachment.url(:original) : 'https://www.naturalwellbeing.com/assets/noimage/product.jpg'%>
+    <%product_image = item.variant.images.length>0 ? item.variant.images.first.attachment.url(:original) : 'https://www.naturalwellbeing.com/assets/noimage/product.jpg'%>
     <!--*********************Product List*********************-->
     <tr><td valign="top" style="padding-bottom:30px;">
       <table width="100%" cellspacing="0" border="0" cellpadding="0">

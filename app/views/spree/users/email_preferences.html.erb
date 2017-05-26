@@ -47,6 +47,6 @@
        return the_response.body
      end
   %>
-  <%= raw(get_html_content(form_url)) %>
+  <%= raw(get_html_content(form_url).gsub('"//e.','"http://e.')) %>
 
 </div>

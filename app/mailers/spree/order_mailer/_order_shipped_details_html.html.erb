@@ -81,7 +81,18 @@
         }
     }
 </style>
+ <%
+    get_carrier=lambda{|shipment|
+      carrier=shipment.carrier ? shipment.carrier : shipment.shipping_method.carrier
+      carrier ? carrier.name : shipment.shipping_method.name
+    }
 
+    get_tracking=lambda{|shipment|
+      carrier=shipment.carrier ? shipment.carrier : shipment.shipping_method.carrier
+      tracking=carrier ? carrier.trackurl : shipment.shipping_method.tracking_url
+      tracking + shipment.tracking
+    }
+ %>
 <body style="margin: 0px;padding:0; background-color:#ffffff;" bgcolor="#ffffff">
 <!--100% body table-->
 <table width="100%" cellspacing="0" border="0" cellpadding="0" bgcolor="#ffffff">
@@ -108,7 +119,7 @@
 
                   Sent date:&nbsp;<span class="appleLinksDBlack"><%= order.shipments.first.updated_at.strftime("%B %d %Y at %I:%M %p") %></span><br>
 
-                  Shipped via:&nbsp;<%= order.shipments.first.shipping_method.name %>
+                  Shipped via:&nbsp;<%= get_carrier.call(order.shipments.first) %>
 
                 </td>
 
@@ -116,7 +127,7 @@
                     <td valign="middle" class="track">
                       <table width="240" height="50" border="0" cellspacing="0" cellpadding="0" align="right" style="width:240px;background-color:#f7941d;-webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px;"  bgcolor="#f7941d" class="trackButton">
                         <tr><td valign="middle" align="center" height="50" style="padding-left:10px;padding-right:10px;" mc:edit="button1" class="button1">
-                        <a href="<%= order.shipments.first.shipping_method.tracking_url.to_s+order.shipments.first.tracking.to_s %>" target="_blank" style="font-family:Lato,Arial,sans-serif;-webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px;font-size:16px;color:#ffffff;display:block;padding-top:17px;padding-bottom:17px; text-decoration: none;text-align:center;">TRACK YOUR PACKAGE</a>
+                        <a href="<%= get_tracking.call(order.shipments.first) %>" target="_blank" style="font-family:Lato,Arial,sans-serif;-webkit-border-radius: 4px; -moz-border-radius: 4px; border-radius: 4px;font-size:16px;color:#ffffff;display:block;padding-top:17px;padding-bottom:17px; text-decoration: none;text-align:center;">TRACK YOUR PACKAGE</a>
                         </td></tr>
                       </table>
                     </td>

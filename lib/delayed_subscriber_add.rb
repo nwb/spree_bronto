@@ -1,4 +1,4 @@
-DelayedSubscriberAdd = Struct.new(:store_code, :user, :list, :ops) do
+DelayedSubscriberAdd = Struct.new(:store_code, :user, :list, :ops, :status) do
   def perform
 
     if list.nil? || !user
@@ -15,6 +15,7 @@ DelayedSubscriberAdd = Struct.new(:store_code, :user, :list, :ops) do
 
         contact = BrontoIntegration::Contact.new(token)
         contacts=contact.set_up(email,ops||{})
+        contact.update_status(email,status) unless !status # make sure the status none-transactional to receive marketing emails
         subscriber_id= contacts[:id]
 
         communication = BrontoIntegration::Communication.new(token)

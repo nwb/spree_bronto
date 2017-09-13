@@ -18,5 +18,7 @@ Spree::Core::Engine.routes.append do
   post "/subscribecampaign", :to => 'home#subscribecampaign'
   post "/subscribecampaign_with_ops", :to => 'home#subscribecampaign_with_ops'
 
+  post "/subscribekeyword", :to => 'home#subscribekeyword'
+
 end
 

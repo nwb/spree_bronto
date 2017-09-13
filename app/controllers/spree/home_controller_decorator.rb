@@ -35,7 +35,7 @@ Spree::HomeController.class_eval do
       end
       campaign= Spree::BrontoList.find_by_title(title)
       if !!campaign
-        Delayed::Job.enqueue DelayedSubscriberAdd.new(current_store.code, email, campaign, {:First_Name => name})
+        Delayed::Job.enqueue DelayedSubscriberAdd.new(current_store.code, email, campaign, {:First_Name => name}, 'Onboarding')
       end
       render :json => ({
                  :success => true,
@@ -61,7 +61,7 @@ Spree::HomeController.class_eval do
       campaign_ids.each do |campaign_id|
       campaign=Spree::BrontoList.find_by_list_id(campaign_id)
       if !!campaign
-        Delayed::Job.enqueue DelayedSubscriberAdd.new(current_store.code, email, campaign, {:First_Name => name})
+        Delayed::Job.enqueue DelayedSubscriberAdd.new(current_store.code, email, campaign, {:First_Name => name}, 'Onboarding')
       end
       end
       render :json => ({
@@ -90,7 +90,7 @@ Spree::HomeController.class_eval do
         options=cookies[:campaign_options] || '{}'
         options=Hash[JSON.parse(options).map{|(k,v)| [k.to_sym,v]}]
         Rails.logger.info "find campaign_options cookie: #{cookies.inspect}"
-        Delayed::Job.enqueue DelayedSubscriberAdd.new(current_store.code, email, campaign, {:First_Name => name})
+        Delayed::Job.enqueue DelayedSubscriberAdd.new(current_store.code, email, campaign, {:First_Name => name}, 'Onboarding')
       end
 
       drop_email_key=params[:drop_email_key] || ''
@@ -110,6 +110,30 @@ Spree::HomeController.class_eval do
 
   end
 
+  # sign up sms keyworkd to get transaction email or marketing email claimed by the keyword.
+  def subscribekeyword
+    keyword=params[:keyword] || ''
+    email=params[:email]
+    mobile_number=params[:mobile_number]
+
+    if email.length>0 and keyword.length>0
+
+      drop_email_key=params[:drop_email_key] || ''
+
+      Delayed::Job.enqueue DelayedSubscribeKeyword.new(current_store.code, email, mobile_number, keyword, {})
+
+      render :json => ({
+                 :success => true,
+                 :message => t( :subscription_sent )
+             }).to_json
+    else
+      render :json => ({
+                 :success => false,
+                 :message => t( :subscription_notsent )
+             }).to_json
+    end
+
+  end
 
   # sign up compaign flexible form, like the one for newsletter.
   def subscribecampaign_with_ops
@@ -119,7 +143,7 @@ Spree::HomeController.class_eval do
     if email.length>0
       campaign=Spree::BrontoList.find_by_list_id(campaign_id)
       if !!campaign
-        Delayed::Job.enqueue DelayedSubscriberAdd.new(current_store.code, email, campaign,ops)
+        Delayed::Job.enqueue DelayedSubscriberAdd.new(current_store.code, email, campaign,ops, 'Onboarding')
       end
 
       drop_email_key=params[:drop_email_key] || ''

@@ -71,7 +71,7 @@ class Bronto
             :includeLists => false,
             :fields => 'id',
             :pageNumber => 1,
-            :includeSMSKeywords => false,
+            :includeSMSKeywords => true,
             :includeGeoIPData => false,
             :includeTechnologyData => false,
             :includeRFMData => false
@@ -138,6 +138,131 @@ class Bronto
 
     result
   end
+
+  # the sms part
+  def read_sms_messages(message_name)
+    if !! message_name
+      filter= {
+          :name =>  [{ operator: 'EqualTo', :value => message_name }]
+      }
+    else
+      filter= {}
+    end
+
+    response = client.call(
+        :read_sms_messages,
+        soap_header: soup_header,
+        message: {
+            :filter => filter,
+            includeContent: false,
+            pageNumber: 1
+        })
+
+    result = response.body[:read_sms_messages_response][:return]
+
+    if result.blank? || result[:id].blank?
+      raise Bronto::ValidationError, "Couldn't find the message template for \"#{message_name}\""
+    end
+
+    result
+  end
+
+  #data={name:"promo",content:"Thank you for promo signup"}
+  def add_sms_messages(data)
+    response = client.call(
+        :add_sms_messages,
+        soap_header: soup_header,
+        message: { messages: data }
+    )
+
+    result = response.body[:add_sms_messages_response]
+
+    if result[:is_error]
+      raise ValidationError, "(Error Code: #{result[:error_code]}) #{result[:error_string]}"
+    else
+      result
+    end
+  end
+
+  def read_sms_keywords(message_name)
+    if !! message_name
+      filter= {
+          :name =>  [{ operator: 'EqualTo', :value => message_name }]
+      }
+    else
+      filter= {}
+    end
+
+    response = client.call(
+        :read_sms_keywords,
+        soap_header: soup_header,
+        message: {
+            :filter => filter,
+            includeDeleted: false,
+            pageNumber: 1
+        })
+
+    result = response.body[:read_sms_keywords_response][:return]
+
+    if result.blank? || result[:id].blank?
+      raise Bronto::ValidationError, "Couldn't find the message template for \"#{message_name}\""
+    end
+
+    result
+  end
+
+  #data={name:"promo",onfirmationMessage:"Thank you for promo signup"}
+  def add_sms_keywords(data)
+    response = client.call(
+        :add_sms_keywords,
+        soap_header: soup_header,
+        message: { keyword: data }
+    )
+
+    result = response.body[:add_sms_keywords_response]
+
+    if result[:is_error]
+      raise ValidationError, "(Error Code: #{result[:error_code]}) #{result[:error_string]}"
+    else
+      result
+    end
+  end
+
+  #data={start:"YYYY-MM-DDTHH:MM:SS-04:00",messageId:"",recipients:"",fields:""}
+  def add_sms_deliveries(data)
+    response = client.call(
+        :add_sms_deliveries,
+        soap_header: soup_header,
+        message: { smsdeliveries: data }
+    )
+
+    result = response.body[:add_sms_deliveries_response]
+
+    if result[:is_error]
+      raise ValidationError, "(Error Code: #{result[:error_code]}) #{result[:error_string]}"
+    else
+      result
+    end
+  end
+
+  #data={sms_keyword:keywordObject,contacts:contactObject[]}
+  def add_to_sms_keyword(keyword,contacts)
+    response = client.call(
+        :add_to_sms_keyword,
+        soap_header: soup_header,
+        message: { keyword: keyword,  contacts: contacts }
+    )
+
+    result = response.body[:add_to_sms_keyword_response]
+
+    if result[:is_error]
+      raise ValidationError, "(Error Code: #{result[:error_code]}) #{result[:error_string]}"
+    else
+      result
+    end
+  end
+  # sms part done.
+
 
   # Ref: http://dev.bronto.com/api/v4/functions/add/adddeliveries
   def add_deliveries(data)

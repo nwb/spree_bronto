@@ -26,6 +26,28 @@ module BrontoIntegration
       bronto_client.update_contacts({:email => email, :status => status})
     end
 
+    def update_mobile(email,mobileNumber)
+      bronto_client.update_contacts({:email => email, :mobileNumber => mobileNumber})
+    end
+
+    #SMSKeywordIDs=['0bbe04200000000000000000000000000e4f']
+    def update_sms_keyword_ids(email,sms_keyworkd_ids)
+      bronto_client.update_contacts({:email => email, :SMSKeywordIDs => sms_keyworkd_ids})
+    end
+
+    def get_sms_keyword_ids_by_email(email)
+
+      get_contact_by_email(email)[:SMSKeywordIDs]
+    end
+
+    def get_contact_by_email(email)
+      unless contact = bronto_client.read_contacts(email)
+        contact = bronto_client.add_or_update_contacts({ email: email })
+      end
+
+      contact
+    end
+
     def build(email,fields)
       {
           :email => email,

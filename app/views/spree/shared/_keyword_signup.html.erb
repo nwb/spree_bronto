@@ -1,0 +1,55 @@
+<% sms_keyword= Spree::BrontoConfiguration.account[current_store.code]['sms_keyword']%>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h2 class="title" style="width:100%">Get updated on your phone</h2>
+    <div class="delivery">
+    <div class="address_box" id="he_signup_box">
+      <div class='offer_copy'>
+        <p>Sign up SMS message to track your orders with your mobile</p>
+      </div>
+        <form action="/subscribekeyword" method="post" id="sms-signup" class="">
+          <div class="home_expert_description" style="">
+            <fieldset id="password-credentials">
+              <div class="form-group">
+            <input type="hidden" class="form-text" name="email" value="<%= @order.email %>"  >
+            <input type="text" class="form-control" name="mobile_number" placeholder="1-xxx-xxx-xxxx" onfocus="(this.value == '1-xxx-xxx-xxxx') &amp;&amp; (this.value = '')" onblur="(this.value == '') &amp;&amp; (this.value = '1-xxx-xxx-xxxx')" >
+              </div>
+              </fieldset>
+            <input name="authenticity_token" id="authenticity_token" type="hidden" value="Zb8AiaovzIh6OL0ONWxkE+hBS9MIID/jiZe6ZXqhfes=">
+            <input name="keyword" id="keyword" type="hidden" value="<%= sms_keyword %>">
+            <button onclick="$('#sms-signup').submit();return false;" class="btn btn-submit" style="padding-left: 8px;">Submit</button>
+            <div id="subscribekeyword" style="color:red;"></div>
+          </div>
+        </form>
+
+        <p></p>
+
+
+    </div>
+    </div>
+  </div>
+</div>
+
+  <script>
+
+      jQuery(document).ready(function(){
+
+          $('#sms-signup #authenticity_token').attr('value',$.cookie('authenticity_token'))
+
+          $('#sms-signup').submit(function( evt ){
+              var form = $( this );
+              form.ajaxSubmit({
+                  dataType: 'json',
+                  type: 'POST',
+                  success: function(data, status_text, xhr) {
+                      $( "#he_signup_box").html('<h4>Thank you for subscribing!</h4><p>You will receive a welcome message shortly and will start receiving our order status message!</p>'); setTimeout('$.unblockUI();',1000);
+                  }
+              });
+              evt.preventDefault();
+          });
+
+      });
+      //done
+
+  </script>

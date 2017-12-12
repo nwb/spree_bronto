@@ -13,7 +13,7 @@ Spree::UserRegistrationsController.class_eval do
     if params.key? :newsletter_signup
      if params['spree_user']['email'] && params['newsletter_signup']
       @bronto_lists.each do |k|
-        list=Spree::BrontoList.find(k)
+        list=Spree::BrontoList.find_by_id(k)
 
         if k && params['spree_user']['email']
           subscribe_to_list(params['spree_user']['email'], list)

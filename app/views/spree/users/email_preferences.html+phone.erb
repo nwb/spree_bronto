@@ -1,0 +1,53 @@
+<% web_form_shared_secret= Spree::BrontoConfiguration.account[current_store.code]['web_form_shared_secret']
+   site_id= Spree::BrontoConfiguration.account[current_store.code]['site_id']
+   preference_form_id= Spree::BrontoConfiguration.account[current_store.code]['preference_form_id']
+
+   user_hash =OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), web_form_shared_secret, site_id + preference_form_id + @user.email)
+
+   form_url= "http://app.bronto.com/public/webform/lookup/#{preference_form_id}/#{site_id}/manpref/#{@user.email}/#{user_hash}"
+%>
+
+<div id="_header-row-2" style="height:45px;background:white;">
+  <a href="/account?tab=profile" class="ui-tabs-anchor" role="presentation" style="float:left;padding-top: 10px;padding-left: 10px;"><img src="/assets/nwb/profile.png" style="height:30px;"><div style="text-align: center;padding-top: 10px;padding-left:6px;display:inline;color: #0169AB;">Profile</div></a>
+  <a href="/logout" class="ui-tabs-anchor" role="presentation" style="float:right;padding-top: 10px;padding-right: 10px;"><img src="/assets/nwb/logout.png" style="height:30px;"><div style="text-align: center;padding-top: 10px;padding-right:6px;display:inline; float:left;color: #0169AB;">Log Out</div></a>
+</div>
+
+
+<div id="account" class="content_tabs_wrapper" style="height: 110px;padding-top: 15px;">
+  <div id="content_tabs" class="ui-tabs ui-widget ui-widget-content" style="display:block;border:none;height:auto !important;">
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix" role="tablist" style="width: 80%; margin-left: 13%;">
+
+      <li role="tab" style="display:inline-block;text-align: -webkit-match-parent;" tabindex="1" aria-controls="profile-tab" aria-labelledby="ui-id-1" aria-selected="false">
+        <a href="/account?tab=orders" class="ui-tabs-anchor" role="presentation"><img src="/assets/nwb/orders.png" style="display:block;"><div style="text-align: center;padding-top: 5px;">Orders History</div></a>
+      </li>
+
+      <li role="tab" style="display:inline-block;text-align: -webkit-match-parent;" tabindex="2" aria-controls="autodelivery-tab" aria-labelledby="ui-id-2" aria-selected="false">
+        <a href="/account?tab=autodelivery" class="ui-tabs-anchor" role="presentation"><img src="/assets/nwb/autodelivery.png" style="display:block;"><div style="text-align: center;padding-top: 5px;">Auto Delivery</div></a>
+      </li>
+      <li role="tab" style="display:inline-block;text-align: -webkit-match-parent;" tabindex="3" aria-controls="emailpreferences-tab" aria-labelledby="ui-id-3" aria-selected="false">
+        <a href="#s" class="ui-tabs-anchor" role="presentation"><img src="/assets/nwb/mail.png" style="display:block;"><div style="text-align: center;padding-top: 5px;">Email Preferences</div></a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="bronto">
+
+  <%
+     def get_html_content(requested_url)
+       url = URI.parse(requested_url)
+       full_path = (url.query.blank?) ? url.path : "#{url.path}?#{url.query}"
+       the_request = Net::HTTP::Get.new(full_path)
+
+       #the_request.use_ssl = (url.scheme == "https")
+
+       the_response = Net::HTTP.start(url.host, url.port) { |http|
+         http.request(the_request)
+       }
+
+       return "<p>Sorry not available at this moment</p>" if !the_response || the_response.code != "200"
+       return the_response.body
+     end
+  %>
+  <%= raw(get_html_content(form_url).gsub('"//e.','"http://e.')) %>
+
+</div>

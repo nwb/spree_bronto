@@ -1,4 +1,5 @@
-<p>This email is to inform you that your order has been <strong>cancelled</strong> on <%= Time.now.strftime("%B %d %Y at %I:%M %p") %>.</p><br>
+<%tnow= Time.zone.at(Time.new())%>
+<p>This email is to inform you that your order has been <strong>cancelled</strong> on <%= tnow.strftime("%B %d %Y at %I:%M %p") %>.</p><br>
 
 <p>Your order number is <strong class="pink"><%= order.number %></strong> Please keep it for reference if you speak to a customer service representative.</p><br>
 

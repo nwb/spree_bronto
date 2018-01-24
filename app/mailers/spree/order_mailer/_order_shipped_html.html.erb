@@ -1,4 +1,5 @@
-<p>This email is to inform you that your order has been shipped on <%= Time.now.strftime("%B %d %Y at %I:%M %p") %>.</p>
+<%tnow= Time.zone.at(Time.new())%>
+<p>This email is to inform you that your order has been shipped on <%= tnow.strftime("%B %d %Y at %I:%M %p") %>.</p>
 
 <p>
   <strong>Your tracking details:</strong><br />

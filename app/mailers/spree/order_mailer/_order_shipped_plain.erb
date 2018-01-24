@@ -1,4 +1,5 @@
-This email is to inform you that your order has been shipped on <%= Time.now.strftime("%B %d %Y at %I:%M %p") %>.
+<%tnow= Time.zone.at(Time.new())%>
+This email is to inform you that your order has been shipped on <%= tnow.strftime("%B %d %Y at %I:%M %p") %>.
 
 Your tracking details:
 Package ID: <%= order.shipments.first.number %>

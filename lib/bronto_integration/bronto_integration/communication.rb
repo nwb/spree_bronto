@@ -48,8 +48,8 @@ module BrontoIntegration
       bronto_client.add_sms_deliveries(mail_options.merge build(message_name,recipient_email,delivery_type,mail_type,variables_payload))
     end
 
-    def trigger_sms_delivery_by_id(message_id,recipient_email,delivery_type,content,keyword_id, mail_options)
-      bronto_client.add_sms_deliveries(mail_options.merge build_sms_with_id(message_id,recipient_email,delivery_type,content,keyword_id))
+    def trigger_sms_delivery_by_id(message_id,recipient_email,delivery_type,content,keyword_id, message_fields)
+      bronto_client.add_sms_deliveries(build_sms_with_id(message_id,recipient_email,delivery_type,content,keyword_id,message_fields))
     end
 
     def add_to_keyword(keyword_name,email,mobileNumber)
@@ -105,7 +105,7 @@ module BrontoIntegration
       }
     end
 
-    def build_sms_with_id(message_api_id,recipient_email,delivery_type,content,keyword_id)   # default to triggered
+    def build_sms_with_id(message_api_id,recipient_email,delivery_type,content,keyword_id,message_fields)   # default to triggered
       {
           start: Time.new().iso8601(),
           messageId: message_api_id,
@@ -113,7 +113,8 @@ module BrontoIntegration
           recipients: [
               { id: contact_id(recipient_email),  type: 'contact', deliveryType: delivery_type},
               { id: keyword_id,  type: 'keyword', deliveryType: 'eligible'}
-          ]
+          ],
+          fields: message_fields
       }
     end
   end
